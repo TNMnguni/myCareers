@@ -19,6 +19,7 @@ namespace myCareers.Application
         {
             // Register application services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IPasswordResetService, PasswordResetService>();
 
             services.AddAutoMapper(config =>
             {

@@ -11,11 +11,89 @@ namespace myCareers.Web.Controllers
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly ILogger<AccountController> _logger;
+        private readonly IPasswordResetService _passwordResetService;
 
-        public AccountController(IAuthenticationService authenticationService, ILogger<AccountController> logger)
+
+        public AccountController(IAuthenticationService authenticationService, IPasswordResetService passwordResetService, ILogger<AccountController> logger)
         {
             _authenticationService = authenticationService;
             _logger = logger;
+            _passwordResetService = passwordResetService;
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _passwordResetService.SendPasswordResetEmailAsync(model);
+
+            TempData["InfoMessage"] = result.Message;
+
+            return RedirectToAction(nameof(ForgotPasswordConfirmation));
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword(string token, string email)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                TempData["ErrorMessage"] = "Invalid password reset link.";
+                return RedirectToAction(nameof(Login));
+            }
+
+            var isValid = await _passwordResetService.ValidateResetTokenAsync(token, email);
+
+            if (!isValid)
+            {
+                TempData["ErrorMessage"] = "This password reset link is invalid or has expired.";
+                return RedirectToAction(nameof(Login));
+            }
+
+            var model = new ResetPasswordDto
+            {
+                Token = token,
+                Email = email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _passwordResetService.ResetPasswordAsync(model);
+
+            if (result.Success)
+            {
+                TempData["SuccessMessage"] = result.Message;
+                return RedirectToAction(nameof(Login));
+            }
+
+            TempData["ErrorMessage"] = result.Message;
+            return View(model);
         }
 
         [HttpGet]

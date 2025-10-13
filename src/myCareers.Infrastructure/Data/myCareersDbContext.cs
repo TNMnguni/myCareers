@@ -19,9 +19,27 @@ namespace myCareers.Infrastructure.Data
         public DbSet<Recruiter> Recruiters { get; set; }
         public DbSet<Applicant> Applicants{ get; set; }
 
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
+        // Add to OnModelCreating method:
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //Password reset
+            modelBuilder.Entity<PasswordResetToken>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Token).IsUnique();
+                entity.Property(e => e.Token).IsRequired().HasMaxLength(255);
+
+                entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            });
 
             // User configuration
             modelBuilder.Entity<User>(entity =>
@@ -91,3 +109,4 @@ namespace myCareers.Infrastructure.Data
         }
     }
 }
+

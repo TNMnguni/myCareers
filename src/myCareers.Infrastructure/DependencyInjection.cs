@@ -18,14 +18,11 @@ namespace myCareers.Infrastructure
             var connectionString = configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            services.AddDbContext<myCareersDbContext>(options =>
-                options.UseSqlServer(
-                    connectionString,
-                    b => b.MigrationsAssembly(typeof(myCareersDbContext).Assembly.FullName)
-                ));
+            services.AddDbContext<myCareersDbContext>(options => options.UseSqlServer(connectionString,b => b.MigrationsAssembly(typeof(myCareersDbContext).Assembly.FullName)));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
 
             // Services
             services.AddScoped<IJwtTokenService, JwtTokenService>();

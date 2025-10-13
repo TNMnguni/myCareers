@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using myCareers.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using myCareers.Infrastructure.Data;
 namespace myCareers.Infrastructure.Migrations
 {
     [DbContext(typeof(myCareersDbContext))]
-    partial class myCareersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251013185935_AddPasswordResetTokens")]
+    partial class AddPasswordResetTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
