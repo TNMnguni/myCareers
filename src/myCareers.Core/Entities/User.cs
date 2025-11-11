@@ -1,10 +1,6 @@
 ﻿using myCareers.Core.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace myCareers.Core.Entities
 {
@@ -39,6 +35,7 @@ namespace myCareers.Core.Entities
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
         public DateTime? LastLoginDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         // Navigation properties
         public Recruiter? Recruiter { get; set; }

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace myCareers.Core.Entities
 {
-    public class Applicant
+    public class Applicant 
     {
-        public int Id { get; set; }
-
-        public int UserId { get; set; }
+        public int Id { get; set; }  // Its own primary key
+        public int UserId { get; set; }  // Foreign key to User
 
         [MaxLength(20)]
         public string? IdNumber { get; set; }
@@ -33,7 +33,10 @@ namespace myCareers.Core.Entities
         [MaxLength(50)]
         public string? Gender { get; set; }
 
-        // Navigation properties
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; } = null!;
+
+        public virtual ICollection<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
+        public virtual ICollection<ApplicationDocument> Documents { get; set; } = new List<ApplicationDocument>();
     }
 }

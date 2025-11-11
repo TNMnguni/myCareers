@@ -117,14 +117,16 @@ body {
         }
 
 .form-check-input:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: #25FF0D;
+    border-color: #25FF0D;
 }
 
+
 .input-group-text {
-    background-color: #f8f9fa;
+    background-color: #f8f9fa; 
     border-color: #ced4da;
 }
+
 
 .text-danger {
     font-size: 0.875rem;
@@ -149,8 +151,8 @@ body {
 }
 
 .form-check:has(input[type="radio"]:checked) {
-    background-color: #e7f3ff;
-    border-color: #0d6efd !important;
+    background-color: #F1FFE9;
+    border-color: #2FC61E !important;
 }
 
 .form-check:hover {

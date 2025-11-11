@@ -2,15 +2,12 @@
 using Microsoft.Extensions.Logging;
 using myCareers.Application.DTOs;
 using myCareers.Application.DTOs.Authentication;
+using myCareers.Application.DTOs.Profile;
 using myCareers.Application.Interfaces;
-using myCareers.Core.Enterfaces;
 using myCareers.Core.Entities;
 using myCareers.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using myCareers.Core.Interfaces;
+
 
 namespace myCareers.Application.Services
 {
@@ -37,45 +34,58 @@ namespace myCareers.Application.Services
         {
             try
             {
-                // Check if user already exists
+                //  Check if email already exists
                 if (await _userRepository.EmailExistsAsync(registerDto.Email))
                 {
                     return new AuthenticationResult
                     {
                         Success = false,
-                        Errors = new List<string> { "User with this email already exists" }
+                        Errors = new List<string> { "A user with this email already exists." }
                     };
                 }
 
-                // Create new user
+                //  Create new user entity
                 var user = new User
                 {
-                    Email = registerDto.Email.ToLower(),
+                    Email = registerDto.Email.Trim().ToLower(),
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
-                    FirstName = registerDto.FirstName,
-                    LastName = registerDto.LastName,
+                    FirstName = registerDto.FirstName.Trim(),
+                    LastName = registerDto.LastName.Trim(),
                     PhoneNumber = registerDto.PhoneNumber,
                     Role = registerDto.Role,
                     CreatedDate = DateTime.UtcNow
                 };
 
-                // Create role-specific profile
-                if (registerDto.Role == UserRole.Recruiter)
+                // Attach role-specific entity
+                switch (registerDto.Role)
                 {
-                    user.Recruiter = new Recruiter { User = user };
-                }
-                else if (registerDto.Role == UserRole.Applicant)
-                {
-                    user.Applicant = new Applicant{ User = user };
+                    case UserRole.Recruiter:
+                        user.Recruiter = new Recruiter
+                        {
+                            User = user,
+                            Department = "Human Resources", // Optional default value
+                            JobTitle = "HR Manager"
+                        };
+                        break;
+
+                    case UserRole.Applicant:
+                        user.Applicant = new Applicant
+                        {
+                            User = user
+                        };
+                        break;
                 }
 
+                // Persist the new user and related entity
                 var createdUser = await _userRepository.CreateAsync(user);
 
+                // Generate tokens
                 var token = _jwtTokenService.GenerateAccessToken(createdUser);
                 var refreshToken = _jwtTokenService.GenerateRefreshToken();
 
-                _logger.LogInformation("User registered successfully: {Email}", registerDto.Email);
+                _logger.LogInformation("✅ User registered successfully: {Email}", registerDto.Email);
 
+                // Return successful result
                 return new AuthenticationResult
                 {
                     Success = true,
@@ -86,11 +96,11 @@ namespace myCareers.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during user registration for email: {Email}", registerDto.Email);
+                _logger.LogError(ex, "❌ Error during registration for {Email}", registerDto.Email);
                 return new AuthenticationResult
                 {
                     Success = false,
-                    Errors = new List<string> { "An error occurred during registration" }
+                    Errors = new List<string> { "An unexpected error occurred during registration. Please try again." }
                 };
             }
         }
@@ -162,6 +172,121 @@ namespace myCareers.Application.Services
         public async Task<bool> ValidateTokenAsync(string token)
         {
             return _jwtTokenService.ValidateToken(token);
+        }
+
+        public async Task<UserDto?> GetUserProfileAsync(int userId)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(userId);
+                if (user == null) return null;
+
+                var userDto = _mapper.Map<UserDto>(user);
+                return userDto;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting profile for user {UserId}", userId);
+                return null;
+            }
+        }
+
+        public async Task<ProfileResult> UpdateProfileAsync(int userId, UpdateProfileDto dto)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    return new ProfileResult
+                    {
+                        Success = false,
+                        Errors = new List<string> { "User not found" }
+                    };
+                }
+
+                // Update basic user info
+                user.FirstName = dto.FirstName;
+                user.LastName = dto.LastName;
+                user.PhoneNumber = dto.PhoneNumber;
+                user.UpdatedDate = DateTime.UtcNow;
+
+                // Update recruiter-specific info if user is a recruiter
+                if (user.Role == UserRole.Recruiter && user.Recruiter != null)
+                {
+                    user.Recruiter.Department = dto.Department;
+                    user.Recruiter.JobTitle = dto.JobTitle;
+                    user.Recruiter.EmployeeId = dto.EmployeeId;
+                }
+
+                await _userRepository.UpdateAsync(user);
+
+                _logger.LogInformation("Profile updated successfully for user {UserId}", userId);
+
+                return new ProfileResult
+                {
+                    Success = true,
+                    Message = "Profile updated successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating profile for user {UserId}", userId);
+                return new ProfileResult
+                {
+                    Success = false,
+                    Errors = new List<string> { "An error occurred while updating your profile" }
+                };
+            }
+        }
+
+        public async Task<ProfileResult> ChangePasswordAsync(int userId, ChangePasswordDto dto)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    return new ProfileResult
+                    {
+                        Success = false,
+                        Errors = new List<string> { "User not found" }
+                    };
+                }
+
+                // Verify current password
+                if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
+                {
+                    return new ProfileResult
+                    {
+                        Success = false,
+                        Errors = new List<string> { "Current password is incorrect" }
+                    };
+                }
+
+                // Hash new password
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+                user.UpdatedDate = DateTime.UtcNow;
+
+                await _userRepository.UpdateAsync(user);
+
+                _logger.LogInformation("Password changed successfully for user {UserId}", userId);
+
+                return new ProfileResult
+                {
+                    Success = true,
+                    Message = "Password changed successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error changing password for user {UserId}", userId);
+                return new ProfileResult
+                {
+                    Success = false,
+                    Errors = new List<string> { "An error occurred while changing your password" }
+                };
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ namespace myCareers.Core.Entities
         public bool IsUsed { get; set; } = false;
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime ExpiresAt { get; set; }
 
         // Navigation
         public User User { get; set; } = null!;

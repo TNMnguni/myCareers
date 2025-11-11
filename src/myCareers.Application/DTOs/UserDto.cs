@@ -1,9 +1,4 @@
 ﻿using myCareers.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace myCareers.Application.DTOs
 {
@@ -22,5 +17,26 @@ namespace myCareers.Application.DTOs
 
         public string FullName => $"{FirstName} {LastName}";
         public string RoleDisplayName => Role.ToString();
+
+        // Recruiter profile info
+        public RecruiterProfileDto? RecruiterProfile { get; set; }
+
+        // Applicant profile info 
+        public ApplicantProfileDto? ApplicantProfile { get; set; }
+    }
+
+    public class RecruiterProfileDto
+    {
+        public int Id { get; set; }
+        public string? Department { get; set; }
+        public string? JobTitle { get; set; }
+        public string? EmployeeId { get; set; }
+        public DateTime? StartDate { get; set; }
+    }
+
+    public class ApplicantProfileDto
+    {
+        public int Id { get; set; }
+        // Add applicant-specific fields when Sprint 3 comes
     }
 }

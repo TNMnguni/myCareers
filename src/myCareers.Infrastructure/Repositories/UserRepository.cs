@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using myCareers.Core.Enterfaces;
+using myCareers.Core.Interfaces;
 using myCareers.Core.Entities;
 using myCareers.Infrastructure.Data;
 using System;
@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using myCareers.Application.Interfaces;
+
 
 namespace myCareers.Infrastructure.Repositories
 {

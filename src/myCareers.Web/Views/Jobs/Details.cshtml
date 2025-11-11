@@ -1,0 +1,221 @@
+﻿@model myCareers.Application.DTOs.JobPosting.JobPostingDto
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-body p-4">
+                    <!-- Job Header -->
+                    <div class="mb-4">
+                        <h1 class="mb-3">@Model.Title</h1>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="badge bg-primary"><i class="fas fa-building me-1"></i>@Model.Department</span>
+                            <span class="badge bg-info"><i class="fas fa-map-marker-alt me-1"></i>@Model.Location</span>
+                            <span class="badge bg-success"><i class="fas fa-briefcase me-1"></i>@Model.EmploymentTypeDisplay</span>
+                            <span class="badge bg-warning text-dark"><i class="fas fa-chart-line me-1"></i>@Model.ExperienceLevelDisplay</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.SalaryRange))
+                        {
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-money-bill-wave me-2"></i><strong>Salary:</strong> @Model.SalaryRange
+                            </p>
+                        }
+                        <p class="text-muted">
+                            <i class="fas fa-calendar-alt me-2"></i><strong>Closing Date:</strong> @Model.ClosingDate.ToString("dd MMMM yyyy")
+                            @if (Model.DaysUntilClosing > 0)
+                            {
+                                <span class="badge bg-danger ms-2">@Model.DaysUntilClosing days left</span>
+                            }
+                            else if (Model.IsClosed)
+                            {
+                                <span class="badge bg-secondary ms-2">Applications Closed</span>
+                            }
+                        </p>
+                    </div>
+
+                    <!-- Job Description -->
+                    <div class="mb-4">
+                        <h4 class="border-bottom pb-2 mb-3">Job Description</h4>
+                        <div style="white-space: pre-line;">@Model.Description</div>
+                    </div>
+
+                    <!-- Requirements Section (if you want to add it) -->
+                    <div class="mb-4">
+                        <h4 class="border-bottom pb-2 mb-3">What We're Looking For</h4>
+                        <ul>
+                            <li>Relevant qualifications and experience as specified</li>
+                            <li>Strong communication and interpersonal skills</li>
+                            <li>Ability to work in a team environment</li>
+                            <li>Commitment to public service excellence</li>
+                        </ul>
+                    </div>
+
+                    <!-- Recruiter Info -->
+                    <div class="alert alert-light">
+                        <p class="mb-1"><strong>Posted by:</strong> @Model.RecruiterName</p>
+                        <p class="mb-0 text-muted"><small>Posted on @Model.CreatedDate.ToString("dd MMMM yyyy")</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Apply for this position</h5>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        @if (User.IsInRole("Applicant"))
+                        {
+                            @if (Model.IsActive && !Model.IsClosed)
+                            {
+                                @if (ViewBag.HasApplied == true)
+                                {
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <strong>Application Submitted</strong>
+                                        <p class="mb-2 mt-2">You have already applied for this position.</p>
+                                        <a asp-controller="Application" asp-action="MyApplications" class="btn btn-sm btn-outline-success w-100">
+                                            <i class="fas fa-file-alt me-2"></i>View My Applications
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Application" asp-action="Apply" asp-route-jobId="@Model.Id" class="btn btn-success btn-lg w-100 mb-3">
+                                        <i class="fas fa-paper-plane me-2"></i>Submit Application
+                                    </a>
+                                    <div class="alert alert-info mb-0">
+                                        <small>
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            <strong>Before you apply:</strong><br />
+                                            • Have your CV ready<br />
+                                            • Prepare copies of qualifications<br />
+                                            • Allow 20-30 minutes to complete
+                                        </small>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    This position is no longer accepting applications.
+                                </div>
+                            }
+                        }
+                        else if (User.IsInRole("Recruiter"))
+                        {
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                You are viewing this as a recruiter. Only applicants can apply for jobs.
+                            </div>
+                            @if (ViewBag.IsOwner == true)
+                            {
+                                <a asp-controller="JobPosting" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary w-100 mb-2">
+                                    <i class="fas fa-edit me-2"></i>Edit This Job
+                                </a>
+                                <a asp-controller="JobPosting" asp-action="Index" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to My Jobs
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Only applicants can apply for jobs.
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path" class="btn btn-primary w-100 mb-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Apply
+                        </a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </a>
+                        <p class="text-muted small mt-3 mb-0">
+                            <i class="fas fa-lock me-1"></i>
+                            You must be logged in as an applicant to apply for this position.
+                        </p>
+                    }
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6 class="card-title">Job Information</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-eye text-primary me-2"></i>
+                            <strong>Views:</strong> @Model.ViewCount
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-file-alt text-success me-2"></i>
+                            <strong>Applications:</strong> @Model.ApplicationCount
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-clock text-warning me-2"></i>
+                            <strong>Status:</strong>
+                            @if (Model.IsActive && !Model.IsClosed)
+                            {
+                                <span class="badge bg-success">Open</span>
+                            }
+                            else if (Model.IsClosed)
+                            {
+                                <span class="badge bg-danger">Closed</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactive</span>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card shadow mt-3">
+                <div class="card-body">
+                    <h6 class="card-title">Share this job</h6>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard()">
+                            <i class="fas fa-link me-2"></i>Copy Link
+                        </button>
+                        <a href="mailto:?subject=Job Opportunity: @Model.Title&body=Check out this job opportunity: @Context.Request.Scheme://@Context.Request.Host@Context.Request.Path" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Browse -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a asp-action="Browse" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Job Listings
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyToClipboard() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+    </script>
+}

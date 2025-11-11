@@ -1,0 +1,1554 @@
+﻿@model myCareers.Application.DTOs.JobApplication.CreateJobApplicationDto
+@{
+    ViewData["Title"] = "Apply for Position";
+}
+
+<style>
+    .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .step-indicator::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #e0e0e0;
+        z-index: -1;
+    }
+    .step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+    }
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        color: #666;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+    .step.active .step-circle {
+        background: #0d6efd;
+        color: white;
+    }
+    .step.completed .step-circle {
+        background: #198754;
+        color: white;
+    }
+    .step-label {
+        font-size: 12px;
+        color: #666;
+    }
+    .step.active .step-label {
+        color: #0d6efd;
+        font-weight: bold;
+    }
+    .form-section {
+        display: none;
+    }
+    .form-section.active {
+        display: block;
+    }
+    .required-field::after {
+        content: " *";
+        color: red;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-file-signature me-2"></i>
+                        Employment application for: @ViewBag.JobTitle post
+                    </h3>
+                    <p class="mb-0 mt-2"><small>@ViewBag.Department</small></p>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Step Indicator -->
+                    <div class="step-indicator mb-4">
+                        <div class="step active" data-step="1">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Position</div>
+                        </div>
+                        <div class="step" data-step="2">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Personal Info</div>
+                        </div>
+                        <div class="step" data-step="3">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Contact</div>
+                        </div>
+                        <div class="step" data-step="4">
+                            <div class="step-circle">4</div>
+                            <div class="step-label">Languages</div>
+                        </div>
+                        <div class="step" data-step="5">
+                            <div class="step-circle">5</div>
+                            <div class="step-label">Education</div>
+                        </div>
+                        <div class="step" data-step="6">
+                            <div class="step-circle">6</div>
+                            <div class="step-label">Experience</div>
+                        </div>
+                        <div class="step" data-step="7">
+                            <div class="step-circle">7</div>
+                            <div class="step-label">References</div>
+                        </div>
+                        <div class="step" data-step="8">
+                            <div class="step-circle">8</div>
+                            <div class="step-label">Documents</div>
+                        </div>
+                        <div class="step" data-step="9">
+                            <div class="step-circle">9</div>
+                            <div class="step-label">Review</div>
+                        </div>
+                    </div>
+
+                    <form id="applicationForm" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="JobPostingId" />
+
+                        <!-- Section 1: Position Information -->
+                        <div class="form-section active" id="section-1">
+                            <h4 class="border-bottom pb-2 mb-4">Section 1: Position Information</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PositionInfo.JobTitle" class="form-label required-field">Job Title</label>
+                                    <input asp-for="PositionInfo.JobTitle" class="form-control" readonly />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PositionInfo.Department" class="form-label required-field">Department</label>
+                                    <input asp-for="PositionInfo.Department" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PositionInfo.ReferenceNumber" class="form-label required-field">Reference Number</label>
+                                    <input asp-for="PositionInfo.ReferenceNumber" class="form-control" readonly />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PositionInfo.NoticePeriod" class="form-label required-field">Notice Period</label>
+                                    <select asp-for="PositionInfo.NoticePeriod" class="form-select">
+                                        <option value="">-- Select Notice Period --</option>
+                                        <option value="Immediate">Immediate</option>
+                                        <option value="1 week">1 Week</option>
+                                        <option value="2 weeks">2 Weeks</option>
+                                        <option value="1 month" selected>1 Month</option>
+                                        <option value="2 months">2 Months</option>
+                                        <option value="3 months">3 Months</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Personal Information -->
+                        <div class="form-section" id="section-2">
+                            <h4 class="border-bottom pb-2 mb-4">Section 2: Personal Information</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.FirstName" class="form-label required-field">First Name</label>
+                                    <input asp-for="PersonalInfo.FirstName" class="form-control" />
+                                    <span asp-validation-for="PersonalInfo.FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.LastName" class="form-label required-field">Last Name</label>
+                                    <input asp-for="PersonalInfo.LastName" class="form-control" />
+                                    <span asp-validation-for="PersonalInfo.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.DateOfBirth" class="form-label required-field">Date of Birth</label>
+                                    <input asp-for="PersonalInfo.DateOfBirth" type="date" class="form-control" max="@DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd")" />
+                                    <span asp-validation-for="PersonalInfo.DateOfBirth" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.IdPassportNumber" class="form-label required-field">ID/Passport Number</label>
+                                    <input asp-for="PersonalInfo.IdPassportNumber" class="form-control" />
+                                    <span asp-validation-for="PersonalInfo.IdPassportNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.Race" class="form-label required-field">Race</label>
+                                    <select asp-for="PersonalInfo.Race" class="form-select">
+                                        <option value="">-- Select Race --</option>
+                                        <option value="1">African</option>
+                                        <option value="2">White</option>
+                                        <option value="3">Coloured</option>
+                                        <option value="4">Indian</option>
+                                        <option value="5">Other</option>
+                                    </select>
+                                    <span asp-validation-for="PersonalInfo.Race" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.Gender" class="form-label required-field">Gender</label>
+                                    <select asp-for="PersonalInfo.Gender" class="form-select">
+                                        <option value="">-- Select Gender --</option>
+                                        <option value="1">Male</option>
+                                        <option value="2">Female</option>
+                                        <option value="3">Other</option>
+                                        <option value="4">Prefer not to say</option>
+                                    </select>
+                                    <span asp-validation-for="PersonalInfo.Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label required-field">Do you have a disability?</label>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasDisability" class="form-check-input" type="radio" value="true" id="disabilityYes">
+                                    <label class="form-check-label" for="disabilityYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasDisability" class="form-check-input" type="radio" value="false" id="disabilityNo" checked>
+                                    <label class="form-check-label" for="disabilityNo">No</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3" id="disabilityDetailsDiv" style="display: none;">
+                                <label asp-for="PersonalInfo.DisabilityDetails" class="form-label">Disability Details</label>
+                                <textarea asp-for="PersonalInfo.DisabilityDetails" class="form-control" rows="2"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label required-field">Are you a South African citizen?</label>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.IsSouthAfricanCitizen" class="form-check-input" type="radio" value="true" id="citizenYes" checked>
+                                    <label class="form-check-label" for="citizenYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.IsSouthAfricanCitizen" class="form-check-input" type="radio" value="false" id="citizenNo">
+                                    <label class="form-check-label" for="citizenNo">No</label>
+                                </div>
+                            </div>
+
+                            <div id="nonCitizenDiv" style="display: none;">
+                                <div class="mb-3">
+                                    <label asp-for="PersonalInfo.Nationality" class="form-label required-field">Nationality</label>
+                                    <input asp-for="PersonalInfo.Nationality" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label required-field">Do you have a valid work permit?</label>
+                                    <div class="form-check">
+                                        <input asp-for="PersonalInfo.HasValidWorkPermit" class="form-check-input" type="radio" value="true" id="workPermitYes">
+                                        <label class="form-check-label" for="workPermitYes">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input asp-for="PersonalInfo.HasValidWorkPermit" class="form-check-input" type="radio" value="false" id="workPermitNo">
+                                        <label class="form-check-label" for="workPermitNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Criminal Record Questions -->
+                            <hr class="my-4" />
+                            <h5 class="mb-3">Legal & Employment History</h5>
+
+                            <div class="mb-3">
+                                <label class="form-label required-field">Have you been convicted or found guilty of a criminal offence?</label>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasCriminalRecord" class="form-check-input" type="radio" value="true" id="criminalYes">
+                                    <label class="form-check-label" for="criminalYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasCriminalRecord" class="form-check-input" type="radio" value="false" id="criminalNo" checked>
+                                    <label class="form-check-label" for="criminalNo">No</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3" id="criminalDetailsDiv" style="display: none;">
+                                <label asp-for="PersonalInfo.CriminalRecordDetails" class="form-label">Provide details</label>
+                                <textarea asp-for="PersonalInfo.CriminalRecordDetails" class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label required-field">Do you have any pending criminal case against you?</label>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasPendingCriminalCase" class="form-check-input" type="radio" value="true" id="pendingCriminalYes">
+                                    <label class="form-check-label" for="pendingCriminalYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasPendingCriminalCase" class="form-check-input" type="radio" value="false" id="pendingCriminalNo" checked>
+                                    <label class="form-check-label" for="pendingCriminalNo">No</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3" id="pendingCriminalDetailsDiv" style="display: none;">
+                                <label asp-for="PersonalInfo.PendingCriminalCaseDetails" class="form-label">Provide details</label>
+                                <textarea asp-for="PersonalInfo.PendingCriminalCaseDetails" class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label required-field">Have you ever been dismissed for misconduct from the Public Service?</label>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasBeenDismissed" class="form-check-input" type="radio" value="true" id="dismissedYes">
+                                    <label class="form-check-label" for="dismissedYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasBeenDismissed" class="form-check-input" type="radio" value="false" id="dismissedNo" checked>
+                                    <label class="form-check-label" for="dismissedNo">No</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3" id="dismissalDetailsDiv" style="display: none;">
+                                <label asp-for="PersonalInfo.DismissalDetails" class="form-label">Provide details</label>
+                                <textarea asp-for="PersonalInfo.DismissalDetails" class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <!-- Continue with remaining Yes/No questions... -->
+                            <div class="mb-3">
+                                <label class="form-label required-field">Do you have any pending disciplinary case against you?</label>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasPendingDisciplinary" class="form-check-input" type="radio" value="true" id="pendingDisciplinaryYes">
+                                    <label class="form-check-label" for="pendingDisciplinaryYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.HasPendingDisciplinary" class="form-check-input" type="radio" value="false" id="pendingDisciplinaryNo" checked>
+                                    <label class="form-check-label" for="pendingDisciplinaryNo">No</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3" id="pendingDisciplinaryDetailsDiv" style="display: none;">
+                                <label asp-for="PersonalInfo.PendingDisciplinaryDetails" class="form-label">Provide details</label>
+                                <textarea asp-for="PersonalInfo.PendingDisciplinaryDetails" class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <!-- Experience Years -->
+                            <hr class="my-4" />
+                            <h5 class="mb-3">Experience</h5>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.PrivateSectorExperienceYears" class="form-label required-field">Private Sector Experience (Years)</label>
+                                    <input asp-for="PersonalInfo.PrivateSectorExperienceYears" type="number" class="form-control" min="0" max="50" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PersonalInfo.PublicSectorExperienceYears" class="form-label required-field">Public Sector Experience (Years)</label>
+                                    <input asp-for="PersonalInfo.PublicSectorExperienceYears" type="number" class="form-control" min="0" max="50" />
+                                </div>
+                            </div>
+
+                            <!-- Professional Registration -->
+                            <div class="mb-3">
+                                <label class="form-label">Does your profession require official registration?</label>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.RequiresOfficialRegistration" class="form-check-input" type="radio" value="true" id="registrationYes">
+                                    <label class="form-check-label" for="registrationYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="PersonalInfo.RequiresOfficialRegistration" class="form-check-input" type="radio" value="false" id="registrationNo" checked>
+                                    <label class="form-check-label" for="registrationNo">No</label>
+                                </div>
+                            </div>
+
+                            <div id="registrationDetailsDiv" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="PersonalInfo.RegistrationDate" class="form-label">Registration Date</label>
+                                        <input asp-for="PersonalInfo.RegistrationDate" type="date" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="PersonalInfo.RegistrationNumber" class="form-label">Registration Number</label>
+                                        <input asp-for="PersonalInfo.RegistrationNumber" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Contact Details -->
+                        <div class="form-section" id="section-3">
+                            <h4 class="border-bottom pb-2 mb-4">Section 3: Contact Details</h4>
+                            
+                            <div class="mb-3">
+                                <label asp-for="ContactDetails.PhysicalAddress" class="form-label required-field">Physical Address</label>
+                                <textarea asp-for="ContactDetails.PhysicalAddress" class="form-control" rows="2"></textarea>
+                                <span asp-validation-for="ContactDetails.PhysicalAddress" class="text-danger"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactDetails.City" class="form-label required-field">City</label>
+                                    <input asp-for="ContactDetails.City" class="form-control" />
+                                    <span asp-validation-for="ContactDetails.City" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactDetails.PostalCode" class="form-label required-field">Postal Code</label>
+                                    <input asp-for="ContactDetails.PostalCode" class="form-control" />
+                                    <span asp-validation-for="ContactDetails.PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactDetails.PhoneNumber" class="form-label required-field">Phone Number</label>
+                                    <input asp-for="ContactDetails.PhoneNumber" type="tel" class="form-control" placeholder="+27 XX XXX XXXX" />
+                                    <span asp-validation-for="ContactDetails.PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactDetails.AlternativePhoneNumber" class="form-label">Alternative Phone Number</label>
+                                 <input asp-for="ContactDetails.AlternativePhoneNumber" type="tel" class="form-control" placeholder="+27 XX XXX XXXX" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ContactDetails.Email" class="form-label required-field">Email Address</label>
+                                <input asp-for="ContactDetails.Email" type="email" class="form-control" />
+                                <span asp-validation-for="ContactDetails.Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactDetails.PreferredLanguage" class="form-label required-field">Preferred Language for Correspondence</label>
+                                    <select asp-for="ContactDetails.PreferredLanguage" class="form-select">
+                                        <option value="">-- Select Language --</option>
+                                        <option value="English">English</option>
+                                        <option value="Afrikaans">Afrikaans</option>
+                                        <option value="Zulu">Zulu</option>
+                                        <option value="Xhosa">Xhosa</option>
+                                        <option value="Sotho">Sotho</option>
+                                        <option value="Tswana">Tswana</option>
+                                        <option value="Pedi">Pedi</option>
+                                        <option value="Venda">Venda</option>
+                                        <option value="Tsonga">Tsonga</option>
+                                        <option value="Swati">Swati</option>
+                                        <option value="Ndebele">Ndebele</option>
+                                    </select>
+                                    <span asp-validation-for="ContactDetails.PreferredLanguage" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ContactDetails.PreferredCommunicationMethod" class="form-label required-field">Preferred Method of Communication</label>
+                                    <select asp-for="ContactDetails.PreferredCommunicationMethod" class="form-select">
+                                        <option value="">-- Select Method --</option>
+                                        <option value="Email">Email</option>
+                                        <option value="Phone">Phone</option>
+                                        <option value="Post">Post</option>
+                                        <option value="SMS">SMS</option>
+                                    </select>
+                                    <span asp-validation-for="ContactDetails.PreferredCommunicationMethod" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Language Proficiency -->
+                        <div class="form-section" id="section-4">
+                            <h4 class="border-bottom pb-2 mb-4">Section 4: South African Official Language Proficiency</h4>
+                            <p class="text-muted mb-3">Rate your proficiency as 'Good', 'Fair', or 'Poor'</p>
+                            
+                            <div id="languagesContainer">
+                                <div class="language-item mb-3 border p-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Language</label>
+                                            <select class="form-select language-select" name="LanguageProficiencies[0].Language">
+                                                <option value="">-- Select Language --</option>
+                                                <option value="English">English</option>
+                                                <option value="Afrikaans">Afrikaans</option>
+                                                <option value="Zulu">Zulu</option>
+                                                <option value="Xhosa">Xhosa</option>
+                                                <option value="Sotho">Sotho</option>
+                                                <option value="Tswana">Tswana</option>
+                                                <option value="Pedi">Pedi</option>
+                                                <option value="Venda">Venda</option>
+                                                <option value="Tsonga">Tsonga</option>
+                                                <option value="Swati">Swati</option>
+                                                <option value="Ndebele">Ndebele</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Speaking</label>
+                                            <select class="form-select" name="LanguageProficiencies[0].SpeakLevel">
+                                                <option value="">-- Select --</option>
+                                                <option value="Good">Good</option>
+                                                <option value="Fair">Fair</option>
+                                                <option value="Poor">Poor</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Reading/Writing</label>
+                                            <select class="form-select" name="LanguageProficiencies[0].WriteReadLevel">
+                                                <option value="">-- Select --</option>
+                                                <option value="Good">Good</option>
+                                                <option value="Fair">Fair</option>
+                                                <option value="Poor">Poor</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1 d-flex align-items-end">
+                                            <button type="button" class="btn btn-sm btn-danger remove-language" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="addLanguage">
+                                <i class="fas fa-plus me-1"></i>Add Another Language
+                            </button>
+                        </div>
+
+                        <!-- Section 5: Qualifications -->
+                        <div class="form-section" id="section-5">
+                            <h4 class="border-bottom pb-2 mb-4">Section 5: Formal Qualifications</h4>
+                            <p class="text-muted mb-3">List your qualifications from highest (most recent) to lowest</p>
+                            
+                            <div id="qualificationsContainer">
+                                <div class="qualification-item mb-3 border p-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <label class="form-label required-field">Institution Name</label>
+                                            <input type="text" class="form-control" name="Qualifications[0].InstitutionName" placeholder="e.g., University of Pretoria" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label required-field">Qualification</label>
+                                            <input type="text" class="form-control" name="Qualifications[0].QualificationName" placeholder="e.g., Bachelor of Science" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label required-field">Year</label>
+                                            <input type="number" class="form-control" name="Qualifications[0].YearObtained" min="1950" max="@DateTime.Now.Year" />
+                                        </div>
+                                        <div class="col-md-1 d-flex align-items-end">
+                                            <button type="button" class="btn btn-sm btn-danger remove-qualification" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Field of Study (Optional)</label>
+                                            <input type="text" class="form-control" name="Qualifications[0].FieldOfStudy" placeholder="e.g., Computer Science" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="addQualification">
+                                <i class="fas fa-plus me-1"></i>Add Another Qualification
+                            </button>
+                        </div>
+
+                        <!-- Section 6: Work Experience -->
+                        <div class="form-section" id="section-6">
+                            <h4 class="border-bottom pb-2 mb-4">Section 6: Work Experience</h4>
+                            <p class="text-muted mb-3">List your work experience (start with most recent)</p>
+                            
+                            <div id="experienceContainer">
+                                <div class="experience-item mb-4 border p-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Employer Name</label>
+                                            <input type="text" class="form-control" name="WorkExperience[0].EmployerName" placeholder="Company/Organization Name" />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Position Held</label>
+                                            <input type="text" class="form-control" name="WorkExperience[0].Position" placeholder="Your job title" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Start Date</label>
+                                            <input type="date" class="form-control" name="WorkExperience[0].StartDate" />
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">End Date</label>
+                                            <input type="date" class="form-control experience-end-date" name="WorkExperience[0].EndDate" />
+                                        </div>
+                                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                                            <div class="form-check">
+                                                <input class="form-check-input is-current-position" type="checkbox" name="WorkExperience[0].IsCurrentPosition">
+                                                <label class="form-check-label">Current Position</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 d-flex align-items-end">
+                                            <button type="button" class="btn btn-sm btn-danger remove-experience" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label">Reason for Leaving (if applicable)</label>
+                                            <input type="text" class="form-control" name="WorkExperience[0].ReasonForLeaving" placeholder="e.g., Career advancement" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Key Responsibilities</label>
+                                            <textarea class="form-control" name="WorkExperience[0].KeyResponsibilities" rows="2" placeholder="Briefly describe your main duties and achievements"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="addExperience">
+                                <i class="fas fa-plus me-1"></i>Add Another Position
+                            </button>
+                        </div>
+
+                        <!-- Section 7: References -->
+                        <div class="form-section" id="section-7">
+                            <h4 class="border-bottom pb-2 mb-4">Section 7: References</h4>
+                            <p class="text-muted mb-3">Provide at least 1 professional references</p>
+                            
+                            <div id="referencesContainer">
+                                <div class="reference-item mb-3 border p-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" name="References[0].Name" placeholder="Reference full name" />
+                                        </div>
+                                        <div class="col-md-5 mb-3">
+                                            <label class="form-label">Relationship to You</label>
+                                            <input type="text" class="form-control" name="References[0].Relationship" placeholder="e.g., Former Manager" />
+                                        </div>
+                                        <div class="col-md-1 d-flex align-items-end">
+                                            <button type="button" class="btn btn-sm btn-danger remove-reference" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" name="References[0].PhoneNumber" placeholder="+27 XX XXX XXXX" />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email (Optional)</label>
+                                            <input type="email" class="form-control" name="References[0].Email" placeholder="reference@email.com" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Organization (Optional)</label>
+                                            <input type="text" class="form-control" name="References[0].Organization" placeholder="Company/Organization name" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="addReference">
+                                <i class="fas fa-plus me-1"></i>Add Another Reference
+                            </button>
+                        </div>
+
+                        <!-- Section 8: Documents -->
+                        <div class="form-section" id="section-8">
+                            <h4 class="border-bottom pb-2 mb-4">Section 8: Supporting Documents</h4>
+
+                            <div class="alert alert-info mb-4">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Required Documents:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Curriculum Vitae (CV/Resume)</li>
+                                    <li>ID Document or Passport</li>
+                                    <li>Qualification Certificates</li>
+                                    <li><strong>Signed Z83 Form (Required)</strong></li>
+                                </ul>
+                                <small>Accepted formats: PDF, JPG, PNG (max 5MB each)</small>
+                            </div>
+
+                            <!-- Resume -->
+                            <div class="mb-4">
+                                <label class="form-label required-field">Curriculum Vitae (CV/Resume)</label>
+                                <input type="file" class="form-control doc-upload" data-doc-type="Resume" accept=".pdf,.jpg,.jpeg,.png" />
+                                <div class="progress mt-2" style="display: none;">
+                                    <div class="progress-bar" role="progressbar"></div>
+                                </div>
+                                <div class="upload-status mt-2"></div>
+                                <div class="uploaded-files mt-2" data-doc-type="Resume"></div>
+                            </div>
+
+                            <!-- ID Document -->
+                            <div class="mb-4">
+                                <label class="form-label required-field">ID Document / Passport</label>
+                                <input type="file" class="form-control doc-upload" data-doc-type="ID" accept=".pdf,.jpg,.jpeg,.png" />
+                                <div class="progress mt-2" style="display: none;">
+                                    <div class="progress-bar" role="progressbar"></div>
+                                </div>
+                                <div class="upload-status mt-2"></div>
+                                <div class="uploaded-files mt-2" data-doc-type="ID"></div>
+                            </div>
+
+                            <!-- Qualifications -->
+                            <div class="mb-4">
+                                <label class="form-label required-field">Qualification Certificate(s)</label>
+                                <input type="file" class="form-control doc-upload" data-doc-type="Qualification" accept=".pdf,.jpg,.jpeg,.png" />
+                                <div class="progress mt-2" style="display: none;">
+                                    <div class="progress-bar" role="progressbar"></div>
+                                </div>
+                                <div class="upload-status mt-2"></div>
+                                <div class="uploaded-files mt-2" data-doc-type="Qualification"></div>
+                            </div>
+
+                            <!-- Z83 Form -->
+                            <div class="mb-4">
+                                <label class="form-label required-field">Signed Z83 Form</label>
+                                <div class="alert alert-warning mb-3">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>Important:</strong> Download the Z83 form, complete it, sign it, and upload the signed copy.
+                                    <br />
+                                    <a href="https://www.dpsa.gov.za/dpsa2g/documents/ep/2020/Approved%20New%20Z83%20form%20Gazetted%206%20Nov%202020.pdf" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
+                                        <i class="fas fa-download me-1"></i>Download Z83 Form
+                                    </a>
+                                </div>
+                                <input type="file" class="form-control doc-upload" data-doc-type="Z83" accept=".pdf" />
+                                <div class="progress mt-2" style="display: none;">
+                                    <div class="progress-bar" role="progressbar"></div>
+                                </div>
+                                <div class="upload-status mt-2"></div>
+                                <div class="uploaded-files mt-2" data-doc-type="Z83"></div>
+                            </div>
+
+                            <!-- Additional Documents -->
+                            <div class="mb-4">
+                                <label class="form-label">Additional Documents (Optional)</label>
+                                <small class="text-muted d-block mb-2">Transcripts, certifications, professional registrations, etc.</small>
+                                <input type="file" class="form-control doc-upload" data-doc-type="Additional" accept=".pdf,.jpg,.jpeg,.png" multiple />
+                                <div class="progress mt-2" style="display: none;">
+                                    <div class="progress-bar" role="progressbar"></div>
+                                </div>
+                                <div class="upload-status mt-2"></div>
+                                <div class="uploaded-files mt-2" data-doc-type="Additional"></div>
+                            </div>
+
+                            <div class="alert alert-warning mt-3">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Note:</strong> All documents must be certified copies. Original documents will be verified if shortlisted.
+                            </div>
+                        </div>
+
+                        <!-- Section 9: Review & Submit -->
+                        <div class="form-section" id="section-9">
+                            <h4 class="border-bottom pb-2 mb-4">Section 9: Review & Submit</h4>
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Please review your application carefully before submitting. Once submitted, you cannot make changes.
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Application Summary</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="reviewSummary">
+                                        <!-- Summary will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="declaration" required>
+                                <label class="form-check-label" for="declaration">
+                                    <strong>Declaration:</strong> I declare that all the information provided is complete and correct to the best of my knowledge. 
+                                    I understand that any false information provided will result in my application being disqualified or disciplinary action 
+                                    taken against me if I am appointed.
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <div>
+                                <button type="button" class="btn btn-outline-secondary me-2" id="saveDraftBtn">
+                                    <i class="fas fa-save me-2"></i>Save as Draft
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextBtn">
+                                    Next <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Application
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        // ==================== GLOBAL VARIABLES ====================
+        let currentStep = 1;
+        const totalSteps = 9;
+        let uploadedDocuments = [];
+        let currentApplicationId = null;
+
+        // ==================== INITIALIZATION ====================
+        $(document).ready(function() {
+            // Disable jQuery unobtrusive validation for this form to avoid conflicts
+            $('#applicationForm').removeData('validator');
+            $('#applicationForm').removeData('unobtrusiveValidation');
+
+            updateStepIndicator();
+            setupConditionalFields();
+            setupDynamicFields();
+            setupDocumentUpload();
+        });
+
+        // ==================== STEP NAVIGATION ====================
+        $('#nextBtn').click(function() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+        });
+
+        $('#prevBtn').click(function() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        function showStep(step) {
+            $('.form-section').removeClass('active');
+            $(`#section-${step}`).addClass('active');
+
+            $('#prevBtn').toggle(step > 1);
+            $('#nextBtn').toggle(step < totalSteps);
+            $('#submitBtn').toggle(step === totalSteps);
+
+            if (step === totalSteps) {
+                populateReviewSummary();
+            }
+
+            updateStepIndicator();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStepIndicator() {
+            $('.step').each(function() {
+                const stepNum = parseInt($(this).data('step'));
+                $(this).removeClass('active completed');
+
+                if (stepNum === currentStep) {
+                    $(this).addClass('active');
+                } else if (stepNum < currentStep) {
+                    $(this).addClass('completed');
+                }
+            });
+        }
+
+        function validateCurrentStep() {
+            const currentSection = $(`#section-${currentStep}`);
+            let isValid = true;
+            let errors = [];
+
+            // Validate required fields
+            currentSection.find('input[required], select[required], textarea[required]').each(function() {
+                if (!this.checkValidity() || $(this).val() === '') {
+                    isValid = false;
+                    $(this).addClass('is-invalid');
+                    const label = $(this).closest('.mb-3').find('label').first().text().replace('*', '').trim();
+                    if (label && !errors.includes(label)) {
+                        errors.push(label);
+                    }
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            // Section-specific validations
+            if (currentStep === 4) { // Languages
+                const hasLanguage = $('.language-item').first().find('.language-select').val();
+                if (!hasLanguage) {
+                    isValid = false;
+                    errors.push('At least one language proficiency');
+                }
+            }
+
+            if (currentStep === 5) { // Qualifications
+                const hasQualification = $('.qualification-item').first().find('[name$=".InstitutionName"]').val();
+                if (!hasQualification) {
+                    isValid = false;
+                    errors.push('At least one qualification');
+                }
+            }
+
+            if (currentStep === 7) { // References
+                let validReferences = 0;
+                $('.reference-item').each(function() {
+                    const name = $(this).find('[name$=".Name"]').val();
+                    const phone = $(this).find('[name$=".PhoneNumber"]').val();
+                    if (name && phone) validReferences++;
+                });
+                if (validReferences < 1) {
+                    isValid = false;
+                    errors.push('At least one complete reference');
+                }
+            }
+
+            if (currentStep === 8) { // Documents
+                const requiredDocs = [
+                    { type: 'Resume', label: 'Resume/CV' },
+                    { type: 'ID', label: 'ID/Passport document' },
+                    { type: 'Qualification', label: 'Qualification certificate' },
+                    { type: 'Z83', label: 'Signed Z83 form' }
+                ];
+
+                requiredDocs.forEach(doc => {
+                    if (!uploadedDocuments.some(d => d.documentType === doc.type)) {
+                        isValid = false;
+                        errors.push(doc.label);
+                    }
+                });
+            }
+
+            if (!isValid && errors.length > 0) {
+                let errorMsg = 'Please complete the following:\n\n';
+                errors.forEach(err => errorMsg += '• ' + err + '\n');
+                alert(errorMsg);
+            }
+
+            return isValid;
+        }
+
+        // ==================== DOCUMENT UPLOAD ====================
+        function setupDocumentUpload() {
+            $(document).on('change', '.doc-upload', function() {
+                const files = this.files;
+                const documentType = $(this).data('doc-type');
+                const container = $(this).closest('.mb-4');
+
+                if (files.length > 0) {
+                    Array.from(files).forEach(file => {
+                        uploadDocument(file, documentType, container);
+                    });
+                }
+            });
+
+            $(document).on('click', '.remove-file', function() {
+                const fileId = $(this).data('file-id');
+                const fileItem = $(this).closest('.uploaded-file-item');
+
+                if (confirm('Are you sure you want to remove this file?')) {
+                    removeDocument(fileId, fileItem);
+                }
+            });
+        }
+
+        function uploadDocument(file, documentType, container) {
+            // Validate file size
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must not exceed 5MB');
+                return;
+            }
+
+            // Validate file type
+            const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
+            const fileName = file.name.toLowerCase();
+            const isValidType = allowedExtensions.some(ext => fileName.endsWith(ext));
+            if (!isValidType) {
+                alert('Invalid file type. Please upload PDF, JPG, or PNG files only.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('documentType', documentType);
+
+            if (currentApplicationId) {
+                formData.append('applicationId', currentApplicationId);
+            }
+
+            const progressBar = container.find('.progress');
+            const progressBarInner = container.find('.progress-bar');
+            const statusDiv = container.find('.upload-status');
+            const fileInput = container.find('.doc-upload');
+
+            progressBar.show();
+            fileInput.prop('disabled', true);
+            progressBarInner.css('width', '0%').removeClass('bg-success bg-danger');
+            statusDiv.html('<i class="fas fa-spinner fa-spin me-2"></i>Uploading...')
+                .removeClass('text-success text-danger').addClass('text-primary');
+
+            $.ajax({
+                url: '/Application/UploadFile',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function() {
+                    const xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            const percentComplete = (e.loaded / e.total) * 100;
+                            progressBarInner.css('width', percentComplete + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    if (response.success) {
+                        uploadedDocuments.push({
+                            fileId: response.fileId,
+                            fileName: response.fileName,
+                            fileUrl: response.fileUrl,
+                            documentType: documentType,
+                            fileSize: response.fileSize || 0
+                        });
+
+                        statusDiv.html('<i class="fas fa-check-circle me-2"></i>Uploaded successfully')
+                            .removeClass('text-primary text-danger').addClass('text-success');
+                        progressBarInner.addClass('bg-success').css('width', '100%');
+
+                        addUploadedFileToList(response, container, documentType);
+                        fileInput.val('');
+                    } else {
+                        const errorMsg = response.errors ? response.errors.join(', ') : response.message;
+                        statusDiv.html('<i class="fas fa-exclamation-circle me-2"></i>Error: ' + errorMsg)
+                            .removeClass('text-primary text-success').addClass('text-danger');
+                        progressBarInner.addClass('bg-danger').css('width', '100%');
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Upload error:', xhr.responseText);
+                    statusDiv.html('<i class="fas fa-exclamation-circle me-2"></i>Upload failed. Please try again.')
+                        .removeClass('text-primary text-success').addClass('text-danger');
+                    progressBarInner.addClass('bg-danger').css('width', '100%');
+                },
+                complete: function() {
+                    setTimeout(() => {
+                        progressBar.fadeOut();
+                        statusDiv.fadeOut();
+                    }, 3000);
+                    fileInput.prop('disabled', false);
+                }
+            });
+        }
+
+        function addUploadedFileToList(response, container, documentType) {
+            const uploadedFilesDiv = container.find('.uploaded-files');
+
+            const fileItem = `
+                <div class="uploaded-file-item d-flex align-items-center justify-content-between p-2 mb-2 border rounded bg-light" data-file-id="${response.fileId}">
+                    <div class="file-info d-flex align-items-center">
+                        <i class="fas fa-file-${getFileIcon(response.fileName)} me-2 text-primary"></i>
+                        <div>
+                            <span class="file-name d-block">${response.fileName}</span>
+                            <small class="text-muted">${formatFileSize(response.fileSize || 0)}</small>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a href="${response.fileUrl}" target="_blank" class="btn btn-sm btn-outline-primary me-1" title="View">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-file" data-file-id="${response.fileId}" title="Remove">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            uploadedFilesDiv.append(fileItem);
+        }
+
+        function removeDocument(fileId, fileItem) {
+            const formData = new FormData();
+            formData.append('fileId', fileId);
+
+            $.ajax({
+                url: '/Application/DeleteDocument',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        uploadedDocuments = uploadedDocuments.filter(doc => doc.fileId !== fileId);
+                        fileItem.fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert('Failed to delete file: ' + response.message);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Delete error:', xhr.responseText);
+                    alert('An error occurred while deleting the file');
+                }
+            });
+        }
+
+        function getFileIcon(fileName) {
+            const ext = fileName.split('.').pop().toLowerCase();
+            switch(ext) {
+                case 'pdf': return 'pdf';
+                case 'doc':
+                case 'docx': return 'word';
+                case 'jpg':
+                case 'jpeg':
+                case 'png': return 'image';
+                default: return 'alt';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // ==================== CONDITIONAL FIELDS ====================
+        function setupConditionalFields() {
+            $('input[name="PersonalInfo.HasDisability"]').change(function() {
+                $('#disabilityDetailsDiv').toggle($(this).val() === 'true');
+            });
+
+            $('input[name="PersonalInfo.IsSouthAfricanCitizen"]').change(function() {
+                $('#nonCitizenDiv').toggle($(this).val() === 'false');
+            });
+
+            $('input[name="PersonalInfo.HasCriminalRecord"]').change(function() {
+                $('#criminalDetailsDiv').toggle($(this).val() === 'true');
+            });
+
+            $('input[name="PersonalInfo.HasPendingCriminalCase"]').change(function() {
+                $('#pendingCriminalDetailsDiv').toggle($(this).val() === 'true');
+            });
+
+            $('input[name="PersonalInfo.HasBeenDismissed"]').change(function() {
+                $('#dismissalDetailsDiv').toggle($(this).val() === 'true');
+            });
+
+            $('input[name="PersonalInfo.HasPendingDisciplinary"]').change(function() {
+                $('#pendingDisciplinaryDetailsDiv').toggle($(this).val() === 'true');
+            });
+
+            $('input[name="PersonalInfo.RequiresOfficialRegistration"]').change(function() {
+                $('#registrationDetailsDiv').toggle($(this).val() === 'true');
+            });
+
+            $(document).on('change', '.is-current-position', function() {
+                const endDateInput = $(this).closest('.experience-item').find('.experience-end-date');
+                if ($(this).is(':checked')) {
+                    endDateInput.val('').prop('disabled', true);
+                } else {
+                    endDateInput.prop('disabled', false);
+                }
+            });
+        }
+
+        // ==================== DYNAMIC FIELDS ====================
+        function setupDynamicFields() {
+            let languageIndex = 1;
+            let qualificationIndex = 1;
+            let experienceIndex = 1;
+            let referenceIndex = 1;
+
+            $('#addLanguage').click(function() {
+                const newLanguage = $('.language-item:first').clone();
+                newLanguage.find('select, input').each(function() {
+                    const name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr('name', name.replace('[0]', `[${languageIndex}]`));
+                    }
+                    $(this).val('');
+                });
+                newLanguage.find('.remove-language').show();
+                $('#languagesContainer').append(newLanguage);
+                languageIndex++;
+            });
+
+            $('#addQualification').click(function() {
+                const newQual = $('.qualification-item:first').clone();
+                newQual.find('input').each(function() {
+                    const name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr('name', name.replace('[0]', `[${qualificationIndex}]`));
+                    }
+                    $(this).val('');
+                });
+                newQual.find('.remove-qualification').show();
+                $('#qualificationsContainer').append(newQual);
+                qualificationIndex++;
+            });
+
+            $('#addExperience').click(function() {
+                const newExp = $('.experience-item:first').clone();
+                newExp.find('input, textarea').each(function() {
+                    const name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr('name', name.replace('[0]', `[${experienceIndex}]`));
+                    }
+                    $(this).val('');
+                    if ($(this).attr('type') === 'checkbox') {
+                        $(this).prop('checked', false);
+                    }
+                });
+                newExp.find('.remove-experience').show();
+                $('#experienceContainer').append(newExp);
+                experienceIndex++;
+            });
+
+            $('#addReference').click(function() {
+                const newRef = $('.reference-item:first').clone();
+                newRef.find('input').each(function() {
+                    const name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr('name', name.replace('[0]', `[${referenceIndex}]`));
+                    }
+                    $(this).val('');
+                });
+                newRef.find('.remove-reference').show();
+                $('#referencesContainer').append(newRef);
+                referenceIndex++;
+            });
+
+            $(document).on('click', '.remove-language', function() {
+                if ($('.language-item').length > 1) {
+                    $(this).closest('.language-item').remove();
+                }
+            });
+
+            $(document).on('click', '.remove-qualification', function() {
+                if ($('.qualification-item').length > 1) {
+                    $(this).closest('.qualification-item').remove();
+                }
+            });
+
+            $(document).on('click', '.remove-experience', function() {
+                if ($('.experience-item').length > 1) {
+                    $(this).closest('.experience-item').remove();
+                }
+            });
+
+            $(document).on('click', '.remove-reference', function() {
+                if ($('.reference-item').length > 1) {
+                    $(this).closest('.reference-item').remove();
+                }
+            });
+        }
+
+        // ==================== SAVE DRAFT ====================
+        $('#saveDraftBtn').click(function() {
+            const btn = $(this);
+            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Saving...');
+
+            const formData = gatherFormData();
+            const request = {
+                applicationId: currentApplicationId,
+                application: formData
+            };
+
+            $.ajax({
+                url: '/Application/SaveDraft',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(request),
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        currentApplicationId = response.applicationId;
+                        alert('✓ Draft saved successfully!\n\nApplication ID: ' + response.applicationId);
+                    } else {
+                        const errorMsg = response.errors ? response.errors.join('\n') : response.message;
+                        alert('Error saving draft:\n\n' + errorMsg);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Save draft error:', xhr.responseText);
+                    if (xhr.status === 401) {
+                        alert('Your session has expired. Please log in again.');
+                        window.location.href = '/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
+                    } else {
+                        alert('An error occurred while saving your draft.\n\nPlease try again.');
+                    }
+                },
+                complete: function() {
+                    btn.prop('disabled', false).html('<i class="fas fa-save me-2"></i>Save as Draft');
+                }
+            });
+        });
+
+        // ==================== FORM SUBMISSION ====================
+        $('#applicationForm').submit(function(e) {
+            e.preventDefault();
+
+            // Disable jQuery validation to avoid conflicts
+            $(this).validate().cancelSubmit = true;
+
+            if (!$('#declaration').is(':checked')) {
+                alert('Please accept the declaration before submitting.');
+                return false;
+            }
+
+            // Validate required documents
+            const hasResume = uploadedDocuments.some(d => d.documentType === 'Resume');
+            const hasID = uploadedDocuments.some(d => d.documentType === 'ID');
+            const hasQual = uploadedDocuments.some(d => d.documentType === 'Qualification');
+            const hasZ83 = uploadedDocuments.some(d => d.documentType === 'Z83');
+
+            if (!hasResume || !hasID || !hasQual || !hasZ83) {
+                alert('Please upload all required documents:\n\n' +
+                      '• Resume/CV: ' + (hasResume ? '✓' : '✗') + '\n' +
+                      '• ID/Passport: ' + (hasID ? '✓' : '✗') + '\n' +
+                      '• Qualification Certificate: ' + (hasQual ? '✓' : '✗') + '\n' +
+                      '• Signed Z83 Form: ' + (hasZ83 ? '✓' : '✗'));
+                currentStep = 8;
+                showStep(8);
+                return false;
+            }
+
+            if (confirm('⚠️ Final Confirmation\n\n' +
+                        'Are you sure you want to submit this application?\n\n' +
+                        'Once submitted, you cannot make any changes.\n\n' +
+                        'Click OK to submit or Cancel to review.')) {
+
+                const btn = $('#submitBtn');
+                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Submitting...');
+
+                const formData = gatherFormData();
+                const request = {
+                    applicationId: currentApplicationId,
+                    application: formData
+                };
+
+                console.log('Submitting application:', request);
+
+                $.ajax({
+                    url: '/Application/Submit',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(request),
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert('✓ SUCCESS!\n\n' +
+                                  'Your application has been submitted successfully!\n\n' +
+                                  'Application ID: ' + response.applicationId);
+                            window.location.href = '/Application/MyApplications';
+                        } else {
+                            const errorMsg = response.errors ? response.errors.join('\n') : response.message;
+                            alert('❌ Submission Failed\n\n' + errorMsg);
+                            btn.prop('disabled', false).html('<i class="fas fa-paper-plane me-2"></i>Submit Application');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Submit error:', xhr.responseText);
+                        console.error('Status:', xhr.status);
+
+                        if (xhr.status === 401) {
+                            alert('❌ Authentication Error\n\n' +
+                                  'Your session has expired. Please log in again.');
+                            window.location.href = '/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
+                        } else if (xhr.status === 400) {
+                            alert('❌ Validation Error\n\n' +
+                                  'Please check that all required fields are filled correctly.');
+                            btn.prop('disabled', false).html('<i class="fas fa-paper-plane me-2"></i>Submit Application');
+                        } else {
+                            alert('❌ An error occurred while submitting.\n\n' +
+                                  'Error: ' + (xhr.responseText || error));
+                            btn.prop('disabled', false).html('<i class="fas fa-paper-plane me-2"></i>Submit Application');
+                        }
+                    }
+                });
+            }
+        });
+
+        // ==================== GATHER FORM DATA ====================
+        function gatherFormData() {
+            const formData = {
+                JobPostingId: parseInt($('[name="JobPostingId"]').val()),
+                PositionInfo: {
+                    JobTitle: $('[name="PositionInfo.JobTitle"]').val(),
+                    Department: $('[name="PositionInfo.Department"]').val(),
+                    ReferenceNumber: $('[name="PositionInfo.ReferenceNumber"]').val(),
+                    NoticePeriod: $('[name="PositionInfo.NoticePeriod"]').val()
+                },
+                PersonalInfo: {
+                    FirstName: $('[name="PersonalInfo.FirstName"]').val(),
+                    LastName: $('[name="PersonalInfo.LastName"]').val(),
+                    DateOfBirth: $('[name="PersonalInfo.DateOfBirth"]').val() || null,
+                    IdPassportNumber: $('[name="PersonalInfo.IdPassportNumber"]').val(),
+                    Race: parseInt($('[name="PersonalInfo.Race"]').val()) || 1,
+                    Gender: parseInt($('[name="PersonalInfo.Gender"]').val()) || 1,
+                    HasDisability: $('[name="PersonalInfo.HasDisability"]:checked').val() === 'true',
+                    DisabilityDetails: $('[name="PersonalInfo.DisabilityDetails"]').val() || null,
+                    IsSouthAfricanCitizen: $('[name="PersonalInfo.IsSouthAfricanCitizen"]:checked').val() === 'true',
+                    Nationality: $('[name="PersonalInfo.Nationality"]').val() || null,
+                    HasValidWorkPermit: $('[name="PersonalInfo.HasValidWorkPermit"]:checked').length > 0
+                        ? $('[name="PersonalInfo.HasValidWorkPermit"]:checked').val() === 'true'
+                        : null,
+                    HasCriminalRecord: $('[name="PersonalInfo.HasCriminalRecord"]:checked').val() === 'true',
+                    CriminalRecordDetails: $('[name="PersonalInfo.CriminalRecordDetails"]').val() || null,
+                    HasPendingCriminalCase: $('[name="PersonalInfo.HasPendingCriminalCase"]:checked').val() === 'true',
+                    PendingCriminalCaseDetails: $('[name="PersonalInfo.PendingCriminalCaseDetails"]').val() || null,
+                    HasBeenDismissed: $('[name="PersonalInfo.HasBeenDismissed"]:checked').val() === 'true',
+                    DismissalDetails: $('[name="PersonalInfo.DismissalDetails"]').val() || null,
+                    HasPendingDisciplinary: $('[name="PersonalInfo.HasPendingDisciplinary"]:checked').val() === 'true',
+                    PendingDisciplinaryDetails: $('[name="PersonalInfo.PendingDisciplinaryDetails"]').val() || null,
+                    PrivateSectorExperienceYears: parseInt($('[name="PersonalInfo.PrivateSectorExperienceYears"]').val()) || 0,
+                    PublicSectorExperienceYears: parseInt($('[name="PersonalInfo.PublicSectorExperienceYears"]').val()) || 0,
+                    RequiresOfficialRegistration: $('[name="PersonalInfo.RequiresOfficialRegistration"]:checked').val() === 'true',
+                    RegistrationDate: $('[name="PersonalInfo.RegistrationDate"]').val() || null,
+                    RegistrationNumber: $('[name="PersonalInfo.RegistrationNumber"]').val() || null
+                },
+                ContactDetails: {
+                    PhysicalAddress: $('[name="ContactDetails.PhysicalAddress"]').val(),
+                    City: $('[name="ContactDetails.City"]').val(),
+                    PostalCode: $('[name="ContactDetails.PostalCode"]').val(),
+                    PhoneNumber: $('[name="ContactDetails.PhoneNumber"]').val(),
+                    AlternativePhoneNumber: $('[name="ContactDetails.AlternativePhoneNumber"]').val() || null,
+                    Email: $('[name="ContactDetails.Email"]').val(),
+                    PreferredLanguage: $('[name="ContactDetails.PreferredLanguage"]').val(),
+                    PreferredCommunicationMethod: $('[name="ContactDetails.PreferredCommunicationMethod"]').val()
+                },
+                LanguageProficiencies: [],
+                Qualifications: [],
+                WorkExperience: [],
+                References: [],
+                Documents: {
+                    UploadedDocumentIds: uploadedDocuments.map(d => d.fileId)
+                }
+            };
+
+            // Gather languages
+            $('.language-item').each(function() {
+                const language = $(this).find('[name$=".Language"]').val();
+                if (language) {
+                    formData.LanguageProficiencies.push({
+                        Language: language,
+                        SpeakLevel: $(this).find('[name$=".SpeakLevel"]').val(),
+                        WriteReadLevel: $(this).find('[name$=".WriteReadLevel"]').val()
+                    });
+                }
+            });
+
+            // Gather qualifications
+            $('.qualification-item').each(function() {
+                const institution = $(this).find('[name$=".InstitutionName"]').val();
+                if (institution) {
+                    formData.Qualifications.push({
+                        InstitutionName: institution,
+                        QualificationName: $(this).find('[name$=".QualificationName"]').val(),
+                        YearObtained: parseInt($(this).find('[name$=".YearObtained"]').val()),
+                        FieldOfStudy: $(this).find('[name$=".FieldOfStudy"]').val() || null
+                    });
+                }
+            });
+
+            // Gather work experience
+            $('.experience-item').each(function() {
+                const employer = $(this).find('[name$=".EmployerName"]').val();
+                if (employer) {
+                    formData.WorkExperience.push({
+                        EmployerName: employer,
+                        Position: $(this).find('[name$=".Position"]').val(),
+                        StartDate: $(this).find('[name$=".StartDate"]').val() || null,
+                        EndDate: $(this).find('[name$=".EndDate"]').val() || null,
+                        IsCurrentPosition: $(this).find('[name$=".IsCurrentPosition"]').is(':checked'),
+                        ReasonForLeaving: $(this).find('[name$=".ReasonForLeaving"]').val() || null,
+                        KeyResponsibilities: $(this).find('[name$=".KeyResponsibilities"]').val() || null
+                    });
+                }
+            });
+
+            // Gather references
+            $('.reference-item').each(function() {
+                const name = $(this).find('[name$=".Name"]').val();
+                if (name) {
+                    formData.References.push({
+                        Name: name,
+                        Relationship: $(this).find('[name$=".Relationship"]').val(),
+                        PhoneNumber: $(this).find('[name$=".PhoneNumber"]').val(),
+                        Email: $(this).find('[name$=".Email"]').val() || null,
+                        Organization: $(this).find('[name$=".Organization"]').val() || null
+                    });
+                }
+            });
+
+            return formData;
+        }
+
+        // ==================== REVIEW SUMMARY ====================
+        function populateReviewSummary() {
+            const docSummary = uploadedDocuments.map(d =>
+                `<li class="mb-1"><i class="fas fa-check-circle text-success me-2"></i><strong>${d.documentType}:</strong> ${d.fileName}</li>`
+            ).join('');
+
+            const html = `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-briefcase me-2 text-primary"></i>Position Information</h6>
+                        <table class="table table-sm table-borderless">
+                            <tr><td class="text-muted">Job Title:</td><td><strong>${$('[name="PositionInfo.JobTitle"]').val()}</strong></td></tr>
+                            <tr><td class="text-muted">Department:</td><td>${$('[name="PositionInfo.Department"]').val()}</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-user me-2 text-primary"></i>Personal Information</h6>
+                        <table class="table table-sm table-borderless">
+                            <tr><td class="text-muted">Name:</td><td><strong>${$('[name="PersonalInfo.FirstName"]').val()} ${$('[name="PersonalInfo.LastName"]').val()}</strong></td></tr>
+                            <tr><td class="text-muted">ID/Passport:</td><td>${$('[name="PersonalInfo.IdPassportNumber"]').val()}</td></tr>
+                            <tr><td class="text-muted">Email:</td><td>${$('[name="ContactDetails.Email"]').val()}</td></tr>
+                            <tr><td class="text-muted">Phone:</td><td>${$('[name="ContactDetails.PhoneNumber"]').val()}</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-list-check me-2 text-primary"></i>Application Summary</h6>
+                        <table class="table table-sm table-borderless">
+                            <tr><td class="text-muted">Languages:</td><td><strong>${$('.language-item').length}</strong> proficiency(ies)</td></tr>
+                            <tr><td class="text-muted">Qualifications:</td><td><strong>${$('.qualification-item').length}</strong> qualification(s)</td></tr>
+                            <tr><td class="text-muted">Work Experience:</td><td><strong>${$('.experience-item').length}</strong> position(s)</td></tr>
+                            <tr><td class="text-muted">References:</td><td><strong>${$('.reference-item').length}</strong> reference(s)</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-file-upload me-2 text-primary"></i>Uploaded Documents</h6>
+                        ${docSummary ? '<ul class="list-unstyled">' + docSummary + '</ul>' : '<p class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>No documents uploaded</p>'}
+                    </div>
+                </div>
+                <hr>
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Please review all information carefully!</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Click "Previous" to make any changes</li>
+                        <li>Check the declaration box below</li>
+                        <li>Click "Submit Application" to finalize</li>
+                    </ul>
+                </div>
+            `;
+            $('#reviewSummary').html(html);
+        }
+    </script>
+}

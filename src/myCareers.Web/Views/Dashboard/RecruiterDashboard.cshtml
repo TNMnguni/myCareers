@@ -14,113 +14,315 @@
                 </div>
                 <div>
                     <span class="badge bg-success fs-6 me-2">Hiring Manager</span>
-                 
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-<div class="row">
-    <!-- Quick Stats Cards -->
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-primary">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h5 class="card-title">Active Jobs</h5>
-                        <h3 class="mb-0">0</h3>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-briefcase fa-2x"></i>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h5 class="card-title">Total Applications</h5>
-                        <h3 class="mb-0">0</h3>
+    <!-- Statistics Cards -->
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="card-title">Total Jobs</h5>
+                            <h3 class="mb-0">@ViewBag.TotalJobs</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-briefcase fa-2x"></i>
+                        </div>
                     </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-file-alt fa-2x"></i>
+                </div>
+                <div class="card-footer bg-primary bg-opacity-50">
+                    <a asp-controller="JobPosting" asp-action="Index" class="text-white text-decoration-none small">
+                        View all <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="card-title">Active Jobs</h5>
+                            <h3 class="mb-0">@ViewBag.ActiveJobs</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
                     </div>
+                </div>
+                <div class="card-footer bg-success bg-opacity-50">
+                    <small class="text-white">Currently accepting applications</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="card-title">Draft Jobs</h5>
+                            <h3 class="mb-0">@ViewBag.DraftJobs</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-file-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-warning bg-opacity-50">
+                    <small class="text-white">Waiting to be published</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="card-title">Applications</h5>
+                            <h3 class="mb-0">@ViewBag.TotalApplications</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-inbox fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-info bg-opacity-50">
+                    <small class="text-white">Total across all jobs</small>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-warning">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h5 class="card-title">Under Review</h5>
-                        <h3 class="mb-0">0</h3>
+    <!-- Recent Job Postings -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-briefcase me-2"></i>Recent Job Postings</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentJobs != null && ViewBag.RecentJobs.Count > 0)
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var job in ViewBag.RecentJobs)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">@job.Title</h6>
+                                            <small class="text-muted">
+                                                @job.Department • Posted @job.CreatedDate.ToString("dd MMM yyyy")
+                                            </small>
+                                        </div>
+                                        <div class="d-flex gap-2 align-items-center">
+                                            <div class="me-2">
+                                                @if (job.IsActive && !job.IsClosed)
+                                                {
+                                                    <span class="badge bg-success">Active</span>
+                                                }
+                                                else if (job.IsClosed)
+                                                {
+                                                    <span class="badge bg-danger">Closed</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">@job.StatusDisplay</span>
+                                                }
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <a asp-controller="JobPosting"
+                                                   asp-action="Details"
+                                                   asp-route-id="@job.Id"
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a asp-controller="RecruiterApplication"
+                                                   asp-action="JobApplications"
+                                                   asp-route-jobId="@job.Id"
+                                                   class="btn btn-sm btn-outline-info"
+                                                   title="View Applications">
+                                                    <i class="fas fa-inbox"></i>
+                                                    @if (job.ApplicationCount > 0)
+                                                    {
+                                                        <span class="badge bg-danger ms-1">@job.ApplicationCount</span>
+                                                    }
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="mt-3 text-center">
+                            <a asp-controller="JobPosting" asp-action="Index" class="btn btn-primary">
+                                View All Jobs <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-briefcase fa-3x text-muted mb-3"></i>
+                            <p class="text-muted mb-3">You haven't created any job postings yet.</p>
+                            <a asp-controller="JobPosting" asp-action="Create" class="btn btn-success">
+                                <i class="fas fa-plus me-2"></i>Create Your First Job
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="JobPosting" asp-action="Create" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>Create New Job
+                        </a>
+                        <a asp-controller="JobPosting" asp-action="Index" class="btn btn-outline-primary">
+                            <i class="fas fa-list me-2"></i>Manage Jobs
+                        </a>
+                        <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-secondary">
+                            <i class="fas fa-user-edit me-2"></i>Update Profile
+                        </a>
                     </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-clock fa-2x"></i>
+                </div>
+            </div>
+
+            <!-- Recent Applications Alert -->
+            @if (ViewBag.RecentApplicationsCount != null && ViewBag.RecentApplicationsCount > 0)
+            {
+                <div class="card border-info mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-bell me-2"></i>New Applications</h5>
                     </div>
+                    <div class="card-body">
+                        <h3 class="text-info mb-2">@ViewBag.RecentApplicationsCount</h3>
+                        <p class="mb-3">New applications in the last 7 days requiring review</p>
+                        <a asp-controller="RecruiterApplication"
+                           asp-action="JobApplications"
+                           asp-route-jobId="@(ViewBag.MostRecentJobId ?? 0)"
+                           class="btn btn-info btn-sm w-100">
+                            <i class="fas fa-eye me-2"></i>Review Applications
+                        </a>
+                    </div>
+                </div>
+            }
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Tips</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0 ps-3">
+                        <li class="mb-2">Keep job descriptions detailed and clear</li>
+                        <li class="mb-2">Set realistic closing dates</li>
+                        <li class="mb-2">Review applications promptly</li>
+                        <li class="mb-2">Update job status regularly</li>
+                        <li class="mb-0">Provide feedback to candidates</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-success">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h5 class="card-title">Interviews Scheduled</h5>
-                        <h3 class="mb-0">0</h3>
+    <!-- Application Status Overview (Sprint 4 Addition) -->
+    @if (ViewBag.RecentJobs != null && ViewBag.RecentJobs.Count > 0)
+    {
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Application Overview</h5>
                     </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-calendar-check fa-2x"></i>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-paper-plane text-info fa-2x mb-2"></i>
+                                    <h4 class="mb-0">@(ViewBag.SubmittedCount ?? 0)</h4>
+                                    <small class="text-muted">New</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-eye text-warning fa-2x mb-2"></i>
+                                    <h4 class="mb-0">@(ViewBag.UnderReviewCount ?? 0)</h4>
+                                    <small class="text-muted">Under Review</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-star text-primary fa-2x mb-2"></i>
+                                    <h4 class="mb-0">@(ViewBag.ShortlistedCount ?? 0)</h4>
+                                    <small class="text-muted">Shortlisted</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-calendar-check text-success fa-2x mb-2"></i>
+                                    <h4 class="mb-0">@(ViewBag.InterviewScheduledCount ?? 0)</h4>
+                                    <small class="text-muted">Interviews</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-check-circle text-success fa-2x mb-2"></i>
+                                    <h4 class="mb-0">@(ViewBag.AcceptedCount ?? 0)</h4>
+                                    <small class="text-muted">Accepted</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-times-circle text-danger fa-2x mb-2"></i>
+                                    <h4 class="mb-0">@(ViewBag.RejectedCount ?? 0)</h4>
+                                    <small class="text-muted">Rejected</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-briefcase me-2"></i>Recent Job Postings</h5>
-            </div>
-            <div class="card-body">
-                <p class="text-muted">No job postings yet. Create your first job posting to get started!</p>
-                <button class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i>Create Job Posting
-                </button>
-            </div>
-        </div>
-    </div>
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Add animation to cards on load
+            $('.card').hide().fadeIn(600);
 
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Quick Actions</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-outline-primary">
-                        <i class="fas fa-plus me-2"></i>Create New Job
-                    </button>
-                    <button class="btn btn-outline-info">
-                        <i class="fas fa-eye me-2"></i>View Applications
-                    </button>
-                    <button class="btn btn-outline-secondary">
-                        <i class="fas fa-chart-bar me-2"></i>View Reports
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            // Highlight new applications
+            @if (ViewBag.RecentApplicationsCount != null && ViewBag.RecentApplicationsCount > 0)
+            {
+                    <text>
+                    // Pulse animation for new applications alert
+                    setInterval(function() {
+                        $('.border-info').animate({
+                            opacity: 0.7
+                        }, 1000).animate({
+                            opacity: 1
+                        }, 1000)
+                    }, 2000);
+                    </text>
+            }
+
+            // Tooltip initialization
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

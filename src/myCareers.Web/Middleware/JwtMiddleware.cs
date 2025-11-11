@@ -1,5 +1,5 @@
 ﻿using myCareers.Application.Interfaces;
-using myCareers.Core.Enterfaces;
+using myCareers.Core.Interfaces;
 using System.Security.Claims;
 
 namespace myCareers.Web.Middleware

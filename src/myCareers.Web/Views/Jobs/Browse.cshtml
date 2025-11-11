@@ -1,0 +1,349 @@
+﻿@model List<myCareers.Application.DTOs.JobPosting.JobPostingDto>
+@{
+    ViewData["Title"] = "Browse Jobs";
+}
+
+<div class="container-fluid mt-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2><i class="fas fa-search me-2"></i>Browse Available Jobs</h2>
+            <p class="text-muted">Explore exciting career opportunities with DIRCO</p>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Browse" method="get">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" name="search" class="form-control" placeholder="Search by job title, department, or location..." value="@ViewBag.SearchTerm" />
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Search
+                            </button>
+                            @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+                            {
+                                <a asp-action="Browse" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Clear
+                                </a>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Options -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text-muted mb-0">
+                    Found <strong>@ViewBag.TotalJobs</strong> job(s)
+                    @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+                    {
+                        <span>matching "@ViewBag.SearchTerm"</span>
+                    }
+                </p>
+                <div class="btn-group" role="group" id="viewToggle">
+                    <button type="button" class="btn btn-sm btn-outline-secondary active" data-view="grid">
+                        <i class="fas fa-th-large me-1"></i>Grid
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-view="list">
+                        <i class="fas fa-list me-1"></i>List
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Listings Container -->
+    <div class="row" id="jobListingsContainer">
+        @if (Model.Any())
+        {
+            @foreach (var job in Model)
+            {
+                <!-- Grid View Card -->
+                <div class="col-md-6 col-lg-4 mb-4 job-card grid-view">
+                    <div class="card h-100 shadow-sm hover-shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-0">@job.Title</h5>
+                                @if (job.DaysUntilClosing < 7 && job.DaysUntilClosing > 0)
+                                {
+                                    <span class="badge bg-danger">Urgent</span>
+                                }
+                            </div>
+
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-building me-1"></i>@job.Department<br />
+                                <i class="fas fa-map-marker-alt me-1"></i>@job.Location
+                            </p>
+
+                            <div class="mb-3">
+                                <span class="badge bg-primary me-1">@job.EmploymentTypeDisplay</span>
+                                <span class="badge bg-info">@job.ExperienceLevelDisplay</span>
+                            </div>
+
+                            <p class="card-text text-truncate-3">
+                                @(job.Description.Length > 150 ? job.Description.Substring(0, 150) + "..." : job.Description)
+                            </p>
+
+                            @if (!string.IsNullOrEmpty(job.SalaryRange))
+                            {
+                                <p class="text-success mb-2">
+                                    <i class="fas fa-money-bill-wave me-1"></i>@job.SalaryRange
+                                </p>
+                            }
+
+                            <hr class="my-2" />
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Closes: @job.ClosingDate.ToString("dd MMM yyyy")
+                                    @if (job.DaysUntilClosing < 7 && job.DaysUntilClosing > 0)
+                                    {
+                                        <br />
+                                        <span class="text-danger fw-bold">@job.DaysUntilClosing days left!</span>
+                                    }
+                                </small>
+                                <div>
+                                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Applicant"))
+                                    {
+                                        <a asp-controller="Application" asp-action="Apply" asp-route-jobId="@job.Id" class="btn btn-success btn-sm me-1" title="Apply Now">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </a>
+                                    }
+                                    <a asp-action="Details" asp-route-id="@job.Id" class="btn btn-primary btn-sm" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            @if (job.ApplicationCount > 0)
+                            {
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-users me-1"></i>@job.ApplicationCount applicant(s)
+                                    </small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List View Card (Hidden by default) -->
+                <div class="col-12 mb-3 job-card list-view" style="display: none;">
+                    <div class="card shadow-sm hover-shadow-list">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="d-flex align-items-start mb-2">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">
+                                                @job.Title
+                                                @if (job.DaysUntilClosing < 7 && job.DaysUntilClosing > 0)
+                                                {
+                                                    <span class="badge bg-danger ms-2">Urgent</span>
+                                                }
+                                            </h5>
+                                            <p class="text-muted mb-2">
+                                                <i class="fas fa-building me-1"></i>@job.Department
+                                                <span class="mx-2">|</span>
+                                                <i class="fas fa-map-marker-alt me-1"></i>@job.Location
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <span class="badge bg-primary me-1">@job.EmploymentTypeDisplay</span>
+                                        <span class="badge bg-info me-1">@job.ExperienceLevelDisplay</span>
+                                        @if (!string.IsNullOrEmpty(job.SalaryRange))
+                                        {
+                                            <span class="badge bg-success">@job.SalaryRange</span>
+                                        }
+                                    </div>
+
+                                    <p class="card-text mb-2">
+                                        @(job.Description.Length > 250 ? job.Description.Substring(0, 250) + "..." : job.Description)
+                                    </p>
+
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        Closes: @job.ClosingDate.ToString("dd MMM yyyy")
+                                        @if (job.DaysUntilClosing < 7 && job.DaysUntilClosing > 0)
+                                        {
+                                            <span class="text-danger fw-bold ms-2">(@job.DaysUntilClosing days left!)</span>
+                                        }
+                                        @if (job.ApplicationCount > 0)
+                                        {
+                                            <span class="ms-3">
+                                                <i class="fas fa-users me-1"></i>@job.ApplicationCount applicant(s)
+                                            </span>
+                                        }
+                                    </small>
+                                </div>
+
+                                <div class="col-md-4 text-md-end">
+                                    <div class="d-flex flex-column gap-2">
+                                        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Applicant"))
+                                        {
+                                            <a asp-controller="Application" asp-action="Apply" asp-route-jobId="@job.Id" class="btn btn-success">
+                                                <i class="fas fa-paper-plane me-2"></i>Apply Now
+                                            </a>
+                                        }
+                                        <a asp-action="Details" asp-route-id="@job.Id" class="btn btn-outline-primary">
+                                            <i class="fas fa-eye me-2"></i>View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                        <h4>No jobs found</h4>
+                        <p class="text-muted mb-4">
+                            @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+                            {
+                                <span>No jobs match your search criteria. Try adjusting your search terms.</span>
+                            }
+                            else
+                            {
+                                <span>There are no active job postings at the moment. Please check back later!</span>
+                            }
+                        </p>
+                        @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+                        {
+                            <a asp-action="Browse" class="btn btn-primary">
+                                <i class="fas fa-arrow-left me-2"></i>View All Jobs
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.Any() && Model.Count > 9)
+    {
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <nav aria-label="Job listings pagination">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .hover-shadow {
+        transition: all 0.3s ease;
+    }
+
+        .hover-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+        }
+
+    .hover-shadow-list {
+        transition: all 0.2s ease;
+    }
+
+        .hover-shadow-list:hover {
+            box-shadow: 0 0.3rem 0.8rem rgba(0,0,0,0.12) !important;
+            border-left: 4px solid #0d6efd;
+        }
+
+    .text-truncate-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* View Toggle Styles */
+    .grid-view {
+        display: block;
+    }
+
+    .list-view {
+        display: none;
+    }
+
+    /* When in list mode */
+    body.list-mode .grid-view {
+        display: none;
+    }
+
+    body.list-mode .list-view {
+        display: block;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Load saved view preference
+            const savedView = localStorage.getItem('jobViewPreference') || 'grid';
+            if (savedView === 'list') {
+                switchToListView();
+            }
+
+            // View toggle functionality
+            $('#viewToggle button').on('click', function() {
+                const view = $(this).data('view');
+
+                // Update button states
+                $('#viewToggle button').removeClass('active');
+                $(this).addClass('active');
+
+                // Switch views
+                if (view === 'grid') {
+                    switchToGridView();
+                } else {
+                    switchToListView();
+                }
+
+                // Save preference
+                localStorage.setItem('jobViewPreference', view);
+            });
+
+            function switchToGridView() {
+                $('body').removeClass('list-mode');
+                $('.grid-view').show();
+                $('.list-view').hide();
+            }
+
+            function switchToListView() {
+                $('body').addClass('list-mode');
+                $('.grid-view').hide();
+                $('.list-view').show();
+            }
+        });
+    </script>
+}
+</content>

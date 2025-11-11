@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using myCareers.Application.DTOs.Authentication;
 using myCareers.Application.Interfaces;
-using myCareers.Core.Enterfaces;
+using myCareers.Core.Interfaces;
 using myCareers.Core.Entities;
 using System;
 using System.Collections.Generic;

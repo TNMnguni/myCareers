@@ -41,7 +41,7 @@
                         <label asp-for="Email" class="form-label">Email Address</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input asp-for="Email" class="form-control" placeholder="Enter your email address" />
+                            <input asp-for="Email" class="form-control" placeholder="Enter your email address" autocomplete="username" />
                         </div>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
@@ -84,7 +84,10 @@
                         <label asp-for="Password" class="form-label">Password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter a strong password" />
+                            <input asp-for="Password" type="password" class="form-control" id="registerPassword" placeholder="Enter a strong password" autocomplete="new-password" />
+                            <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword">
+                                <i class="fas fa-eye" id="toggleRegisterPasswordIcon"></i>
+                            </button>
                         </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
                         <small class="form-text text-muted">
@@ -96,7 +99,10 @@
                         <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm your password" />
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" autocomplete="new-password" />
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                <i class="fas fa-eye" id="toggleConfirmPasswordIcon"></i>
+                            </button>
                         </div>
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
@@ -111,7 +117,7 @@
                 <div class="text-center mt-3">
                     <p class="mb-0">
                         Already have an account?
-                        <a asp-controller="Account" asp-action="Login" class="text-decoration-none">Sign in here</a>
+                        <a asp-controller="Account" asp-action="Login" class="text-decoration-none">Sign in</a>
                     </p>
                 </div>
             </div>
@@ -121,4 +127,36 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            // Password visibility toggle for registration password
+            $('#toggleRegisterPassword').click(function() {
+                const passwordInput = $('#registerPassword');
+                const toggleIcon = $('#toggleRegisterPasswordIcon');
+
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Password visibility toggle for confirm password
+            $('#toggleConfirmPassword').click(function() {
+                const passwordInput = $('#confirmPassword');
+                const toggleIcon = $('#toggleConfirmPasswordIcon');
+
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+        });
+    </script>
 }

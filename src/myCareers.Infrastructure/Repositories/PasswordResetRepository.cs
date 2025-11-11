@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using myCareers.Core.Enterfaces;
+using myCareers.Core.Interfaces;
 using myCareers.Core.Entities;
 using myCareers.Infrastructure.Data;
 using System;

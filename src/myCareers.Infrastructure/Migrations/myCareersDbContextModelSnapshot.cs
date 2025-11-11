@@ -68,6 +68,372 @@ namespace myCareers.Infrastructure.Migrations
                     b.ToTable("Applicants");
                 });
 
+            modelBuilder.Entity("myCareers.Core.Entities.ApplicationDocument", b =>
+                {
+                    b.Property<Guid>("FileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("JobApplicationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FileId");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("JobApplicationId");
+
+                    b.ToTable("ApplicationDocuments");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.JobApplication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdditionalDocumentsUrls")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AlternativePhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("AppliedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BusinessWithStateDetails")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("ConductsBusinessWithState")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("CriminalRecordDetails")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DisabilityDetails")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("DismissalDetails")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasBeenDischargedIllHealth")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasBeenDismissed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasCriminalRecord")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasDisability")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasPendingCriminalCase")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasPendingDisciplinary")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasResignedPendingDisciplinary")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HasValidWorkPermit")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IdDocumentUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("IdPassportNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("InterviewDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSouthAfricanCitizen")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("JobPostingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("LanguageProficiencies")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Nationality")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NoticePeriod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PendingCriminalCaseDetails")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("PendingDisciplinaryDetails")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PhysicalAddress")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PreferredCommunicationMethod")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PreferredLanguage")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("PrivateSectorExperienceYears")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PublicSectorExperienceYears")
+                        .HasColumnType("int");
+
+                    b.Property<string>("QualificationCertificateUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Qualifications")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Race")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReferenceNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("References")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RegistrationNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("RequiresOfficialRegistration")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ResumeUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ReviewNotes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime?>("ReviewedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TranscriptUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("WillRelinquishBusinessInterests")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("WorkExperience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Z83FormUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobPostingId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("ApplicantId", "JobPostingId")
+                        .IsUnique();
+
+                    b.ToTable("JobApplications");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.JobPosting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicationCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ClosingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Department")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmploymentType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExperienceLevel")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("PublishedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RecruiterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SalaryRange")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecruiterId", "IsActive");
+
+                    b.ToTable("JobPostings");
+                });
+
             modelBuilder.Entity("myCareers.Core.Entities.PasswordResetToken", b =>
                 {
                     b.Property<int>("Id")
@@ -79,6 +445,9 @@ namespace myCareers.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
@@ -87,13 +456,14 @@ namespace myCareers.Infrastructure.Migrations
 
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt");
 
                     b.HasIndex("Token")
                         .IsUnique();
@@ -150,8 +520,7 @@ namespace myCareers.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -177,12 +546,13 @@ namespace myCareers.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -190,20 +560,6 @@ namespace myCareers.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "admin@dirco.gov.za",
-                            FirstName = "System",
-                            IsActive = true,
-                            IsEmailConfirmed = true,
-                            LastName = "Administrator",
-                            PasswordHash = "$2a$11$eH8xczGmS9ZW1mPJh.pnUuF5J8VzM2K9N7xH5rF4N8uP6Y2sL9vGC",
-                            Role = "Administrator"
-                        });
                 });
 
             modelBuilder.Entity("myCareers.Core.Entities.Applicant", b =>
@@ -215,6 +571,54 @@ namespace myCareers.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.ApplicationDocument", b =>
+                {
+                    b.HasOne("myCareers.Core.Entities.Applicant", "Applicant")
+                        .WithMany("Documents")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("myCareers.Core.Entities.JobApplication", "JobApplication")
+                        .WithMany("Documents")
+                        .HasForeignKey("JobApplicationId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("JobApplication");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.JobApplication", b =>
+                {
+                    b.HasOne("myCareers.Core.Entities.Applicant", "Applicant")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("myCareers.Core.Entities.JobPosting", "JobPosting")
+                        .WithMany("Applications")
+                        .HasForeignKey("JobPostingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("JobPosting");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.JobPosting", b =>
+                {
+                    b.HasOne("myCareers.Core.Entities.Recruiter", "Recruiter")
+                        .WithMany("JobPostings")
+                        .HasForeignKey("RecruiterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Recruiter");
                 });
 
             modelBuilder.Entity("myCareers.Core.Entities.PasswordResetToken", b =>
@@ -237,6 +641,28 @@ namespace myCareers.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.Applicant", b =>
+                {
+                    b.Navigation("Documents");
+
+                    b.Navigation("JobApplications");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.JobApplication", b =>
+                {
+                    b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.JobPosting", b =>
+                {
+                    b.Navigation("Applications");
+                });
+
+            modelBuilder.Entity("myCareers.Core.Entities.Recruiter", b =>
+                {
+                    b.Navigation("JobPostings");
                 });
 
             modelBuilder.Entity("myCareers.Core.Entities.User", b =>

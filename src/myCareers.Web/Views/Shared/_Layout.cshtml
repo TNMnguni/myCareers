@@ -4,10 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Dirco Careers</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/myCareers.Web.styles.css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
     <style>
         .toast-container {
             position: fixed;
@@ -18,7 +20,7 @@
 
         .toast {
             min-width: 300px;
-            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
         .toast-success {
@@ -44,11 +46,13 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             @* <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
                         </li>
+
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
@@ -56,6 +60,7 @@
                             </li>
                         }
                     </ul>
+
                     <ul class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
@@ -69,9 +74,9 @@
                                             <i class="fas fa-user-edit me-2"></i>Profile
                                         </a>
                                     </li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li><hr class="dropdown-divider" /></li>
                                     <li>
-                                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline" id="logoutForm">
                                             @Html.AntiForgeryToken()
                                             <button type="submit" class="dropdown-item text-danger">
                                                 <i class="fas fa-sign-out-alt me-2"></i>Logout
@@ -148,27 +153,99 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-black" style="background-color:#F5F5F0; height:80px;">
+    <footer class="border-top footer text-black" style="background-color:#F8F8F8; height:60px;">
         <div class="container d-flex justify-content-center align-items-center h-100">
             &copy; 2025 - Department of International Relations and Cooperation
         </div>
     </footer>
 
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     <script>
         // Initialize all toasts on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-            var toastList = toastElList.map(function(toastEl) {
+            var toastList = toastElList.map(function (toastEl) {
                 var toast = new bootstrap.Toast(toastEl);
                 toast.show();
                 return toast;
             });
         });
+
+        // ========== AUTO-LOGOUT ON BROWSER CLOSE (JWT VERSION) ==========
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+                <text>
+                    (function () {
+                        var rememberMeValue = '@(Context.Session.GetString("RememberMe") ?? "False")';
+                        var rememberMe = rememberMeValue.toLowerCase() === 'true';
+
+                        console.log('Auto-logout initialized. RememberMe value:', rememberMeValue, 'Parsed:', rememberMe);
+
+                        if (!rememberMe) {
+                            console.log('Auto-logout ENABLED - will logout on browser close');
+
+                            var isNavigating = false;
+
+                            document.addEventListener('click', function (e) {
+                                var target = e.target.closest('a');
+                                if (target && target.href) {
+                                    var targetUrl = target.href;
+                                    var currentOrigin = window.location.origin;
+
+                                    if (targetUrl.startsWith(currentOrigin) || targetUrl.startsWith('/')) {
+                                        isNavigating = true;
+                                        setTimeout(function () { isNavigating = false; }, 500);
+                                    }
+                                }
+                            });
+
+                            document.addEventListener('submit', function () {
+                                isNavigating = true;
+                                setTimeout(function () { isNavigating = false; }, 500);
+                            });
+
+                            window.addEventListener('beforeunload', function () {
+                                if (!isNavigating) {
+                                    localStorage.setItem('shouldLogout', 'true');
+                                    localStorage.setItem('logoutTime', Date.now().toString());
+                                }
+                            });
+
+                            var shouldLogout = localStorage.getItem('shouldLogout');
+                            var logoutTime = localStorage.getItem('logoutTime');
+
+                            if (shouldLogout === 'true' && logoutTime) {
+                                var timeDiff = Date.now() - parseInt(logoutTime);
+
+                                if (timeDiff > 2000) {
+                                    localStorage.removeItem('shouldLogout');
+                                    localStorage.removeItem('logoutTime');
+                                    window.location.href = '@Url.Action("AutoLogout", "Account")';
+                                } else {
+                                    localStorage.removeItem('shouldLogout');
+                                    localStorage.removeItem('logoutTime');
+                                }
+                            }
+                        } else {
+                            console.log('Auto-logout DISABLED - RememberMe is enabled');
+                            localStorage.removeItem('shouldLogout');
+                            localStorage.removeItem('logoutTime');
+                        }
+                    })();
+                </text>
+        }
+        else
+        {
+                <text>
+                    localStorage.removeItem('shouldLogout');
+                    localStorage.removeItem('logoutTime');
+                </text>
+        }
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

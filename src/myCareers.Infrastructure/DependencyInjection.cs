@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using myCareers.Application.Interfaces;
-using myCareers.Core.Enterfaces;
+using myCareers.Application.Configuration;
+using myCareers.Core.Interfaces;
 using myCareers.Infrastructure.Data;
 using myCareers.Infrastructure.Repositories;
 using myCareers.Infrastructure.Services;
+
 
 
 namespace myCareers.Infrastructure
@@ -14,18 +15,28 @@ namespace myCareers.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            // Database - Register DbContext
-            var connectionString = configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            // Configuration
+            services.Configure<FileStorageSettings>(options =>
+   configuration.GetSection("FileStorage").Bind(options));
 
-            services.AddDbContext<myCareersDbContext>(options => options.UseSqlServer(connectionString,b => b.MigrationsAssembly(typeof(myCareersDbContext).Assembly.FullName)));
+            // Database
+            services.AddDbContext<myCareersDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly(typeof(myCareersDbContext).Assembly.FullName)));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
+            services.AddScoped<IJobPostingRepository, JobPostingRepository>();
+            services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+            services.AddScoped<IApplicationDocumentRepository, ApplicationDocumentRepository>();
+            services.AddScoped<IRecruiterRepository, RecruiterRepository>(); //I added this line
 
-            // Services
-            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            // Infrastructure Services
+            services.AddScoped<Application.Interfaces.IJwtTokenService, JwtTokenService>();
+            services.AddScoped<Application.Interfaces.IFileUploadService, FileUploadService>();
+           
 
             return services;
         }

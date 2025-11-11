@@ -7,10 +7,11 @@
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
+                    <h2><i class="fas fa-user-tie me-2"></i>Applicant Dashboard</h2>
                     <p class="text-muted mb-0">Welcome back, <strong>@ViewBag.UserName</strong>!</p>
                 </div>
                 <div>
-                    <span class="badge bg-info fs-6 me-2">Applicant</span>
+                    <span class="badge bg-info fs-6 me-2">Applicant Panel</span>
                 </div>
             </div>
         </div>
@@ -24,7 +25,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5 class="card-title">Applications Submitted</h5>
-                            <h3 class="mb-0">0</h3>
+                            <h3 class="mb-0">@ViewBag.TotalApplications</h3>
                         </div>
                         <div class="align-self-center">
                             <i class="fas fa-paper-plane fa-2x"></i>
@@ -40,7 +41,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5 class="card-title">Under Review</h5>
-                            <h3 class="mb-0">0</h3>
+                            <h3 class="mb-0">@ViewBag.UnderReviewCount</h3>
                         </div>
                         <div class="align-self-center">
                             <i class="fas fa-clock fa-2x"></i>
@@ -56,7 +57,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5 class="card-title">Interviews</h5>
-                            <h3 class="mb-0">0</h3>
+                            <h3 class="mb-0">@ViewBag.InterviewsScheduledCount</h3>
                         </div>
                         <div class="align-self-center">
                             <i class="fas fa-calendar-check fa-2x"></i>
@@ -72,7 +73,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5 class="card-title">Available Jobs</h5>
-                            <h3 class="mb-0">0</h3>
+                            <h3 class="mb-0">@ViewBag.AvailableJobsCount</h3>
                         </div>
                         <div class="align-self-center">
                             <i class="fas fa-briefcase fa-2x"></i>
@@ -90,10 +91,62 @@
                     <h5 class="mb-0"><i class="fas fa-file-alt me-2"></i>My Applications</h5>
                 </div>
                 <div class="card-body">
-                    <p class="text-muted">You haven't submitted any applications yet. Browse available jobs to get started!</p>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-search me-2"></i>Browse Jobs
-                    </button>
+                    @if (ViewBag.RecentApplications != null && ViewBag.RecentApplications.Count > 0)
+                    {
+                        <div class="list-group">
+                            @foreach (var app in ViewBag.RecentApplications)
+                            {
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@app.JobTitle</h6>
+                                        <small class="text-muted">
+                                            @app.Department • Applied @app.AppliedDate.ToString("dd MMM yyyy")
+                                        </small>
+                                    </div>
+                                    <div>
+                                        @if (app.Status == myCareers.Core.Enums.ApplicationStatus.Submitted)
+                                        {
+                                            <span class="badge bg-primary me-2">Submitted</span>
+                                        }
+                                        else if (app.Status == myCareers.Core.Enums.ApplicationStatus.UnderReview)
+                                        {
+                                            <span class="badge bg-warning me-2">Under Review</span>
+                                        }
+                                        else if (app.Status == myCareers.Core.Enums.ApplicationStatus.InterviewScheduled)
+                                        {
+                                            <span class="badge bg-success me-2">Interview Scheduled</span>
+                                        }
+                                        else if (app.Status == myCareers.Core.Enums.ApplicationStatus.Rejected)
+                                        {
+                                            <span class="badge bg-danger me-2">Rejected</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary me-2">@app.StatusDisplay</span>
+                                        }
+                                        <a asp-controller="Application" asp-action="Details" asp-route-id="@app.Id" class="btn btn-sm btn-outline-primary">
+                                            View
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="mt-3 text-center">
+                            <a asp-controller="Application" asp-action="MyApplications" class="btn btn-primary">
+                                View All Applications <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">You haven't submitted any applications yet. Browse available jobs to get started!</p>
+                            <a asp-controller="Jobs" asp-action="Browse" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Browse Jobs
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -105,15 +158,15 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <button class="btn btn-outline-primary">
+                        <a asp-controller="Jobs" asp-action="Browse" class="btn btn-outline-primary">
                             <i class="fas fa-search me-2"></i>Browse Jobs
-                        </button>
-                        <button class="btn btn-outline-info">
+                        </a>
+                        <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-info">
                             <i class="fas fa-user-edit me-2"></i>Update Profile
-                        </button>
-                        <button class="btn btn-outline-secondary">
+                        </a>
+                        <a asp-controller="Application" asp-action="MyApplications" class="btn btn-outline-secondary">
                             <i class="fas fa-file-alt me-2"></i>My Applications
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

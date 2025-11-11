@@ -1,0 +1,926 @@
+Folder PATH listing for volume Windows 
+Volume serial number is 4812-B5AE
+C:.
+|   folder_structure.txt
+|   
++---myCareers.Application
+|   |   DependencyInjection.cs
+|   |   myCareers.Application.csproj
+|   |   
+|   +---bin
+|   |   +---Debug
+|   |   |   \---net9.0
+|   |   |           myCareers.Application.deps.json
+|   |   |           myCareers.Application.dll
+|   |   |           myCareers.Application.pdb
+|   |   |           myCareers.Core.dll
+|   |   |           myCareers.Core.pdb
+|   |   |           
+|   |   \---Release
+|   |       \---net9.0
+|   +---Configuration
+|   |       FileStorageSettings.cs
+|   |       
+|   +---DTOs
+|   |   |   UserDto.cs
+|   |   |   
+|   |   +---Authentication
+|   |   |       AuthenticationResult.cs
+|   |   |       ForgotPasswordDto.cs
+|   |   |       LoginDto.cs
+|   |   |       RegisterDto.cs
+|   |   |       ResetPasswordDto.cs
+|   |   |       
+|   |   +---JobApplication
+|   |   |       CreateJobApplicationDto.cs
+|   |   |       DocumentUploadDto.cs
+|   |   |       JobApplicationDto.cs
+|   |   |       
+|   |   +---JobPosting
+|   |   |       CreateJobPostingDto.cs
+|   |   |       JobPostingDto.cs
+|   |   |       JobPostingResult.cs
+|   |   |       UpdateJobPostingDto.cs
+|   |   |       
+|   |   \---Profile
+|   |           UpdateProfileDto.cs
+|   |           
+|   +---Interfaces
+|   |       IAuthenticationService.cs
+|   |       IFileUploadService.cs
+|   |       IJobApplicationService.cs
+|   |       IJobPostingService.cs
+|   |       IJwtTokenService.cs
+|   |       IPasswordResetService.cs
+|   |       
+|   +---Mappings
+|   |       MappingProfile.cs
+|   |       
+|   +---obj
+|   |   |   myCareers.Application.csproj.nuget.dgspec.json
+|   |   |   myCareers.Application.csproj.nuget.g.props
+|   |   |   myCareers.Application.csproj.nuget.g.targets
+|   |   |   project.assets.json
+|   |   |   project.nuget.cache
+|   |   |   
+|   |   +---Debug
+|   |   |   \---net9.0
+|   |   |       |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+|   |   |       |   myCareer.7792E770.Up2Date
+|   |   |       |   myCareers.Application.AssemblyInfo.cs
+|   |   |       |   myCareers.Application.AssemblyInfoInputs.cache
+|   |   |       |   myCareers.Application.assets.cache
+|   |   |       |   myCareers.Application.csproj.AssemblyReference.cache
+|   |   |       |   myCareers.Application.csproj.BuildWithSkipAnalyzers
+|   |   |       |   myCareers.Application.csproj.CoreCompileInputs.cache
+|   |   |       |   myCareers.Application.csproj.FileListAbsolute.txt
+|   |   |       |   myCareers.Application.dll
+|   |   |       |   myCareers.Application.GeneratedMSBuildEditorConfig.editorconfig
+|   |   |       |   myCareers.Application.GlobalUsings.g.cs
+|   |   |       |   myCareers.Application.pdb
+|   |   |       |   myCareers.Application.sourcelink.json
+|   |   |       |   
+|   |   |       +---ref
+|   |   |       |       myCareers.Application.dll
+|   |   |       |       
+|   |   |       \---refint
+|   |   |               myCareers.Application.dll
+|   |   |               
+|   |   \---Release
+|   |       \---net9.0
+|   |           |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+|   |           |   myCareers.Application.AssemblyInfo.cs
+|   |           |   myCareers.Application.AssemblyInfoInputs.cache
+|   |           |   myCareers.Application.assets.cache
+|   |           |   myCareers.Application.csproj.AssemblyReference.cache
+|   |           |   myCareers.Application.GeneratedMSBuildEditorConfig.editorconfig
+|   |           |   myCareers.Application.GlobalUsings.g.cs
+|   |           |   
+|   |           +---ref
+|   |           \---refint
+|   \---Services
+|           AuthenticationService.cs
+|           JobApplicationService.cs
+|           JobPostingService.cs
+|           PasswordResetService.cs
+|           
++---myCareers.Core
+|   |   Class1.cs
+|   |   myCareers.Core.csproj
+|   |   
+|   +---bin
+|   |   +---Debug
+|   |   |   \---net9.0
+|   |   |           myCareers.Core.deps.json
+|   |   |           myCareers.Core.dll
+|   |   |           myCareers.Core.pdb
+|   |   |           
+|   |   \---Release
+|   |       \---net9.0
+|   +---Entities
+|   |       Applicant.cs
+|   |       ApplicationDocument.cs
+|   |       ApplicationModels.cs
+|   |       JobApplication.cs
+|   |       JobPosting.cs
+|   |       PasswordResetToken.cs
+|   |       Recruiter.cs
+|   |       User.cs
+|   |       
+|   +---Enums
+|   |       ApplicationStatus.cs
+|   |       EmploymentType.cs
+|   |       ExperienceLevel.cs
+|   |       Gender.cs
+|   |       JobStatus.cs
+|   |       LanguageProficiency.cs
+|   |       Race.cs
+|   |       UserRole.cs
+|   |       
+|   +---Interfaces
+|   |       IApplicationDocumentRepository.cs
+|   |       IJobApplicationRepository.cs
+|   |       IJobPostingRepository.cs
+|   |       IPasswordResetRepository.cs
+|   |       IUserRepository.cs
+|   |       
+|   \---obj
+|       |   myCareers.Core.csproj.nuget.dgspec.json
+|       |   myCareers.Core.csproj.nuget.g.props
+|       |   myCareers.Core.csproj.nuget.g.targets
+|       |   project.assets.json
+|       |   project.nuget.cache
+|       |   
+|       +---Debug
+|       |   \---net9.0
+|       |       |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+|       |       |   myCareers.Core.AssemblyInfo.cs
+|       |       |   myCareers.Core.AssemblyInfoInputs.cache
+|       |       |   myCareers.Core.assets.cache
+|       |       |   myCareers.Core.csproj.BuildWithSkipAnalyzers
+|       |       |   myCareers.Core.csproj.CoreCompileInputs.cache
+|       |       |   myCareers.Core.csproj.FileListAbsolute.txt
+|       |       |   myCareers.Core.dll
+|       |       |   myCareers.Core.GeneratedMSBuildEditorConfig.editorconfig
+|       |       |   myCareers.Core.GlobalUsings.g.cs
+|       |       |   myCareers.Core.pdb
+|       |       |   myCareers.Core.sourcelink.json
+|       |       |   
+|       |       +---ref
+|       |       |       myCareers.Core.dll
+|       |       |       
+|       |       \---refint
+|       |               myCareers.Core.dll
+|       |               
+|       \---Release
+|           \---net9.0
+|               |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+|               |   myCareers.Core.AssemblyInfo.cs
+|               |   myCareers.Core.AssemblyInfoInputs.cache
+|               |   myCareers.Core.assets.cache
+|               |   myCareers.Core.GeneratedMSBuildEditorConfig.editorconfig
+|               |   myCareers.Core.GlobalUsings.g.cs
+|               |   
+|               +---ref
+|               \---refint
++---myCareers.Infrastructure
+|   |   DependencyInjection.cs
+|   |   myCareers.Infrastructure.csproj
+|   |   
+|   +---bin
+|   |   +---Debug
+|   |   |   \---net9.0
+|   |   |       |   myCareers.Application.dll
+|   |   |       |   myCareers.Application.pdb
+|   |   |       |   myCareers.Core.dll
+|   |   |       |   myCareers.Core.pdb
+|   |   |       |   myCareers.Infrastructure.deps.json
+|   |   |       |   myCareers.Infrastructure.dll
+|   |   |       |   myCareers.Infrastructure.pdb
+|   |   |       |   
+|   |   |       \---LatoFont
+|   |   |               Lato-Black.ttf
+|   |   |               Lato-BlackItalic.ttf
+|   |   |               Lato-Bold.ttf
+|   |   |               Lato-BoldItalic.ttf
+|   |   |               Lato-ExtraBold.ttf
+|   |   |               Lato-ExtraBoldItalic.ttf
+|   |   |               Lato-ExtraLight.ttf
+|   |   |               Lato-ExtraLightItalic.ttf
+|   |   |               Lato-Italic.ttf
+|   |   |               Lato-Light.ttf
+|   |   |               Lato-LightItalic.ttf
+|   |   |               Lato-Medium.ttf
+|   |   |               Lato-MediumItalic.ttf
+|   |   |               Lato-Regular.ttf
+|   |   |               Lato-SemiBold.ttf
+|   |   |               Lato-SemiBoldItalic.ttf
+|   |   |               Lato-Thin.ttf
+|   |   |               Lato-ThinItalic.ttf
+|   |   |               OFL.txt
+|   |   |               
+|   |   \---Release
+|   |       \---net9.0
+|   +---Data
+|   |       DatabaseSeeder.cs
+|   |       myCareersDbContext.cs
+|   |       
+|   +---Migrations
+|   |       20251018172545_FirstMigration.cs
+|   |       20251018172545_FirstMigration.Designer.cs
+|   |       20251020200016_SessionLogout.cs
+|   |       20251020200016_SessionLogout.Designer.cs
+|   |       20251025202452_InitialCreate.cs
+|   |       20251025202452_InitialCreate.Designer.cs
+|   |       myCareersDbContextModelSnapshot.cs
+|   |       
+|   +---obj
+|   |   |   myCareers.Infrastructure.csproj.nuget.dgspec.json
+|   |   |   myCareers.Infrastructure.csproj.nuget.g.props
+|   |   |   myCareers.Infrastructure.csproj.nuget.g.targets
+|   |   |   project.assets.json
+|   |   |   project.nuget.cache
+|   |   |   
+|   |   +---Debug
+|   |   |   \---net9.0
+|   |   |       |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+|   |   |       |   myCareer.DADF0958.Up2Date
+|   |   |       |   myCareers.Infrastructure.AssemblyInfo.cs
+|   |   |       |   myCareers.Infrastructure.AssemblyInfoInputs.cache
+|   |   |       |   myCareers.Infrastructure.assets.cache
+|   |   |       |   myCareers.Infrastructure.csproj.AssemblyReference.cache
+|   |   |       |   myCareers.Infrastructure.csproj.BuildWithSkipAnalyzers
+|   |   |       |   myCareers.Infrastructure.csproj.CoreCompileInputs.cache
+|   |   |       |   myCareers.Infrastructure.csproj.FileListAbsolute.txt
+|   |   |       |   myCareers.Infrastructure.dll
+|   |   |       |   myCareers.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+|   |   |       |   myCareers.Infrastructure.GlobalUsings.g.cs
+|   |   |       |   myCareers.Infrastructure.pdb
+|   |   |       |   myCareers.Infrastructure.sourcelink.json
+|   |   |       |   staticwebassets.removed.txt
+|   |   |       |   
+|   |   |       +---ref
+|   |   |       |       myCareers.Infrastructure.dll
+|   |   |       |       
+|   |   |       +---refint
+|   |   |       |       myCareers.Infrastructure.dll
+|   |   |       |       
+|   |   |       \---staticwebassets
+|   |   \---Release
+|   |       \---net9.0
+|   |           |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+|   |           |   myCareers.Infrastructure.AssemblyInfo.cs
+|   |           |   myCareers.Infrastructure.AssemblyInfoInputs.cache
+|   |           |   myCareers.Infrastructure.assets.cache
+|   |           |   myCareers.Infrastructure.csproj.AssemblyReference.cache
+|   |           |   myCareers.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+|   |           |   myCareers.Infrastructure.GlobalUsings.g.cs
+|   |           |   
+|   |           +---ref
+|   |           \---refint
+|   +---Properties
+|   |       launchSettings.json
+|   |       
+|   +---Repositories
+|   |       ApplicationDocumentRepository.cs
+|   |       JobApplicationRepository.cs
+|   |       JobPostingRepository.cs
+|   |       PasswordResetRepository.cs
+|   |       UserRepository.cs
+|   |       
+|   \---Services
+|           FileUploadService.cs
+|           JwtTokenService.cs
+|           
+\---myCareers.Web
+    |   appsettings.Development.json
+    |   appsettings.json
+    |   myCareers.Web.csproj
+    |   myCareers.Web.csproj.user
+    |   Program.cs
+    |   
+    +---bin
+    |   +---Debug
+    |   |   \---net9.0
+    |   |       |   appsettings.Development.json
+    |   |       |   appsettings.json
+    |   |       |   AutoMapper.dll
+    |   |       |   AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+    |   |       |   Azure.Core.dll
+    |   |       |   Azure.Identity.dll
+    |   |       |   BCrypt.Net-Next.dll
+    |   |       |   Humanizer.dll
+    |   |       |   Microsoft.AspNetCore.Authentication.JwtBearer.dll
+    |   |       |   Microsoft.Bcl.AsyncInterfaces.dll
+    |   |       |   Microsoft.Build.Locator.dll
+    |   |       |   Microsoft.CodeAnalysis.CSharp.dll
+    |   |       |   Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+    |   |       |   Microsoft.CodeAnalysis.dll
+    |   |       |   Microsoft.CodeAnalysis.Workspaces.dll
+    |   |       |   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+    |   |       |   Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+    |   |       |   Microsoft.Data.SqlClient.dll
+    |   |       |   Microsoft.EntityFrameworkCore.Abstractions.dll
+    |   |       |   Microsoft.EntityFrameworkCore.Design.dll
+    |   |       |   Microsoft.EntityFrameworkCore.dll
+    |   |       |   Microsoft.EntityFrameworkCore.Relational.dll
+    |   |       |   Microsoft.EntityFrameworkCore.SqlServer.dll
+    |   |       |   Microsoft.Extensions.Caching.Abstractions.dll
+    |   |       |   Microsoft.Extensions.Caching.Memory.dll
+    |   |       |   Microsoft.Extensions.Configuration.Abstractions.dll
+    |   |       |   Microsoft.Extensions.Configuration.Binder.dll
+    |   |       |   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+    |   |       |   Microsoft.Extensions.DependencyInjection.dll
+    |   |       |   Microsoft.Extensions.DependencyModel.dll
+    |   |       |   Microsoft.Extensions.Logging.Abstractions.dll
+    |   |       |   Microsoft.Extensions.Logging.dll
+    |   |       |   Microsoft.Extensions.Options.dll
+    |   |       |   Microsoft.Extensions.Primitives.dll
+    |   |       |   Microsoft.Identity.Client.dll
+    |   |       |   Microsoft.Identity.Client.Extensions.Msal.dll
+    |   |       |   Microsoft.IdentityModel.Abstractions.dll
+    |   |       |   Microsoft.IdentityModel.JsonWebTokens.dll
+    |   |       |   Microsoft.IdentityModel.Logging.dll
+    |   |       |   Microsoft.IdentityModel.Protocols.dll
+    |   |       |   Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+    |   |       |   Microsoft.IdentityModel.Tokens.dll
+    |   |       |   Microsoft.OpenApi.dll
+    |   |       |   Microsoft.SqlServer.Server.dll
+    |   |       |   Microsoft.Win32.SystemEvents.dll
+    |   |       |   Mono.TextTemplating.dll
+    |   |       |   myCareers.Application.dll
+    |   |       |   myCareers.Application.pdb
+    |   |       |   myCareers.Core.dll
+    |   |       |   myCareers.Core.pdb
+    |   |       |   myCareers.Infrastructure.dll
+    |   |       |   myCareers.Infrastructure.pdb
+    |   |       |   myCareers.Web.deps.json
+    |   |       |   myCareers.Web.dll
+    |   |       |   myCareers.Web.exe
+    |   |       |   myCareers.Web.pdb
+    |   |       |   myCareers.Web.runtimeconfig.json
+    |   |       |   myCareers.Web.staticwebassets.endpoints.json
+    |   |       |   myCareers.Web.staticwebassets.runtime.json
+    |   |       |   QuestPDF.dll
+    |   |       |   Swashbuckle.AspNetCore.Swagger.dll
+    |   |       |   Swashbuckle.AspNetCore.SwaggerGen.dll
+    |   |       |   Swashbuckle.AspNetCore.SwaggerUI.dll
+    |   |       |   System.ClientModel.dll
+    |   |       |   System.CodeDom.dll
+    |   |       |   System.Composition.AttributedModel.dll
+    |   |       |   System.Composition.Convention.dll
+    |   |       |   System.Composition.Hosting.dll
+    |   |       |   System.Composition.Runtime.dll
+    |   |       |   System.Composition.TypedParts.dll
+    |   |       |   System.Configuration.ConfigurationManager.dll
+    |   |       |   System.Drawing.Common.dll
+    |   |       |   System.IdentityModel.Tokens.Jwt.dll
+    |   |       |   System.Memory.Data.dll
+    |   |       |   System.Runtime.Caching.dll
+    |   |       |   System.Security.Cryptography.ProtectedData.dll
+    |   |       |   System.Security.Permissions.dll
+    |   |       |   System.Windows.Extensions.dll
+    |   |       |   
+    |   |       +---cs
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---de
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---es
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---fr
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---it
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---ja
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---ko
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---LatoFont
+    |   |       |       Lato-Black.ttf
+    |   |       |       Lato-BlackItalic.ttf
+    |   |       |       Lato-Bold.ttf
+    |   |       |       Lato-BoldItalic.ttf
+    |   |       |       Lato-ExtraBold.ttf
+    |   |       |       Lato-ExtraBoldItalic.ttf
+    |   |       |       Lato-ExtraLight.ttf
+    |   |       |       Lato-ExtraLightItalic.ttf
+    |   |       |       Lato-Italic.ttf
+    |   |       |       Lato-Light.ttf
+    |   |       |       Lato-LightItalic.ttf
+    |   |       |       Lato-Medium.ttf
+    |   |       |       Lato-MediumItalic.ttf
+    |   |       |       Lato-Regular.ttf
+    |   |       |       Lato-SemiBold.ttf
+    |   |       |       Lato-SemiBoldItalic.ttf
+    |   |       |       Lato-Thin.ttf
+    |   |       |       Lato-ThinItalic.ttf
+    |   |       |       OFL.txt
+    |   |       |       
+    |   |       +---pl
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---pt-BR
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---ru
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---runtimes
+    |   |       |   +---linux-arm64
+    |   |       |   |   \---native
+    |   |       |   |           libqpdf.so
+    |   |       |   |           libQuestPdfSkia.so
+    |   |       |   |           
+    |   |       |   +---linux-musl-x64
+    |   |       |   |   \---native
+    |   |       |   |           libqpdf.so
+    |   |       |   |           libQuestPdfSkia.so
+    |   |       |   |           
+    |   |       |   +---linux-x64
+    |   |       |   |   \---native
+    |   |       |   |           libqpdf.so
+    |   |       |   |           libQuestPdfSkia.so
+    |   |       |   |           
+    |   |       |   +---osx-arm64
+    |   |       |   |   \---native
+    |   |       |   |           libqpdf.dylib
+    |   |       |   |           libQuestPdfSkia.dylib
+    |   |       |   |           
+    |   |       |   +---osx-x64
+    |   |       |   |   \---native
+    |   |       |   |           libqpdf.dylib
+    |   |       |   |           libQuestPdfSkia.dylib
+    |   |       |   |           
+    |   |       |   +---unix
+    |   |       |   |   \---lib
+    |   |       |   |       \---net6.0
+    |   |       |   |               Microsoft.Data.SqlClient.dll
+    |   |       |   |               System.Drawing.Common.dll
+    |   |       |   |               
+    |   |       |   +---win
+    |   |       |   |   \---lib
+    |   |       |   |       \---net6.0
+    |   |       |   |               Microsoft.Data.SqlClient.dll
+    |   |       |   |               Microsoft.Win32.SystemEvents.dll
+    |   |       |   |               System.Drawing.Common.dll
+    |   |       |   |               System.Runtime.Caching.dll
+    |   |       |   |               System.Security.Cryptography.ProtectedData.dll
+    |   |       |   |               System.Windows.Extensions.dll
+    |   |       |   |               
+    |   |       |   +---win-arm
+    |   |       |   |   \---native
+    |   |       |   |           Microsoft.Data.SqlClient.SNI.dll
+    |   |       |   |           
+    |   |       |   +---win-arm64
+    |   |       |   |   \---native
+    |   |       |   |           Microsoft.Data.SqlClient.SNI.dll
+    |   |       |   |           
+    |   |       |   +---win-x64
+    |   |       |   |   \---native
+    |   |       |   |           libgcc_s_seh-1.dll
+    |   |       |   |           libstdc++-6.dll
+    |   |       |   |           libwinpthread-1.dll
+    |   |       |   |           Microsoft.Data.SqlClient.SNI.dll
+    |   |       |   |           qpdf.dll
+    |   |       |   |           QuestPdfSkia.dll
+    |   |       |   |           zlib1.dll
+    |   |       |   |           
+    |   |       |   \---win-x86
+    |   |       |       \---native
+    |   |       |               libgcc_s_dw2-1.dll
+    |   |       |               libstdc++-6.dll
+    |   |       |               libwinpthread-1.dll
+    |   |       |               Microsoft.Data.SqlClient.SNI.dll
+    |   |       |               qpdf.dll
+    |   |       |               QuestPdfSkia.dll
+    |   |       |               zlib1.dll
+    |   |       |               
+    |   |       +---tr
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       +---zh-Hans
+    |   |       |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |       |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |       |       
+    |   |       \---zh-Hant
+    |   |               Microsoft.CodeAnalysis.CSharp.resources.dll
+    |   |               Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |   |               Microsoft.CodeAnalysis.resources.dll
+    |   |               Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |   |               Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |   |               
+    |   \---Release
+    |       \---net9.0
+    +---Controllers
+    |   |   AccountController.cs
+    |   |   ApplicationController.cs
+    |   |   DashboardController.cs
+    |   |   HomeController.cs
+    |   |   JobPostingController.cs
+    |   |   JobsController.cs
+    |   |   RecruiterApplicationController.cs
+    |   |   
+    |   \---Api
+    |           AuthController.cs
+    |           
+    +---Extensions
+    |       DirectorySetup.cs
+    |       
+    +---Middleware
+    |       JwtMiddleware.cs
+    |       
+    +---Models
+    |       ErrorViewModel.cs
+    |       
+    +---obj
+    |   |   myCareers.Web.csproj.nuget.dgspec.json
+    |   |   myCareers.Web.csproj.nuget.g.props
+    |   |   myCareers.Web.csproj.nuget.g.targets
+    |   |   project.assets.json
+    |   |   project.nuget.cache
+    |   |   
+    |   +---Debug
+    |   |   \---net9.0
+    |   |       |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+    |   |       |   ApiEndpoints.json
+    |   |       |   apphost.exe
+    |   |       |   myCareer.71880C9B.Up2Date
+    |   |       |   myCareers.Web.AssemblyInfo.cs
+    |   |       |   myCareers.Web.AssemblyInfoInputs.cache
+    |   |       |   myCareers.Web.assets.cache
+    |   |       |   myCareers.Web.csproj.AssemblyReference.cache
+    |   |       |   myCareers.Web.csproj.BuildWithSkipAnalyzers
+    |   |       |   myCareers.Web.csproj.CoreCompileInputs.cache
+    |   |       |   myCareers.Web.csproj.FileListAbsolute.txt
+    |   |       |   myCareers.Web.dll
+    |   |       |   myCareers.Web.GeneratedMSBuildEditorConfig.editorconfig
+    |   |       |   myCareers.Web.genruntimeconfig.cache
+    |   |       |   myCareers.Web.GlobalUsings.g.cs
+    |   |       |   myCareers.Web.MvcApplicationPartsAssemblyInfo.cache
+    |   |       |   myCareers.Web.MvcApplicationPartsAssemblyInfo.cs
+    |   |       |   myCareers.Web.pdb
+    |   |       |   myCareers.Web.RazorAssemblyInfo.cache
+    |   |       |   myCareers.Web.RazorAssemblyInfo.cs
+    |   |       |   myCareers.Web.sourcelink.json
+    |   |       |   rbcswa.dswa.cache.json
+    |   |       |   rjimswa.dswa.cache.json
+    |   |       |   rjsmcshtml.dswa.cache.json
+    |   |       |   rjsmrazor.dswa.cache.json
+    |   |       |   rpswa.dswa.cache.json
+    |   |       |   staticwebassets.build.endpoints.json
+    |   |       |   staticwebassets.build.json
+    |   |       |   staticwebassets.build.json.cache
+    |   |       |   staticwebassets.development.json
+    |   |       |   staticwebassets.references.upToDateCheck.txt
+    |   |       |   staticwebassets.removed.txt
+    |   |       |   staticwebassets.upToDateCheck.txt
+    |   |       |   
+    |   |       +---compressed
+    |   |       |       00mw7zj95o-mlv21k5csn.gz
+    |   |       |       06fau3i2tk-pj5nd1wqec.gz
+    |   |       |       1dm33g0uja-tdbxkamptv.gz
+    |   |       |       1e3x97i1b3-x0q3zqp4vz.gz
+    |   |       |       1htznyyad3-hrwsygsryq.gz
+    |   |       |       1i3d41m2ka-4v8eqarkd7.gz
+    |   |       |       2s6rju8x9j-cosvhxvwiu.gz
+    |   |       |       2typ6uuraa-pk9g2wxc8p.gz
+    |   |       |       34nj0iapif-zz6u233wcv.gz
+    |   |       |       3jgl9ob3vb-muycvpuwrr.gz
+    |   |       |       5q2nsopjy9-fsbi9cje9m.gz
+    |   |       |       5vrdzf7cum-ft3s53vfgj.gz
+    |   |       |       7wwrzg2c2g-2z0ns9nrw6.gz
+    |   |       |       84ymb2qeah-r4e9w2rdcm.gz
+    |   |       |       912hqb9rjz-jj8uyg4cgr.gz
+    |   |       |       94brko5qb4-khv3u5hwcm.gz
+    |   |       |       a0bi9pwa3u-zz6u233wcv.gz
+    |   |       |       ach925i6l2-k8d9w2qqmf.gz
+    |   |       |       afyo2xkxn9-o1o13a6vjx.gz
+    |   |       |       ahmkflv2cw-6pdc2jztkx.gz
+    |   |       |       ahy0806sye-61n19gt1b8.gz
+    |   |       |       bzycgcxhld-b7pk76d08c.gz
+    |   |       |       cmvjzoamtq-356vix0kms.gz
+    |   |       |       d4b152uqs7-ee0r1s7dh0.gz
+    |   |       |       fk9eb6iufw-06098lyss8.gz
+    |   |       |       futy8jleia-34wktdw7t7.gz
+    |   |       |       h5es2pl9f2-0i3buxo5is.gz
+    |   |       |       hn3oi8qaa4-fvhpjtyr6v.gz
+    |   |       |       i2kxivuv7t-46ein0sx1k.gz
+    |   |       |       i8y42hi6zo-rzd6atqjts.gz
+    |   |       |       ibndx0vbdh-ag7o75518u.gz
+    |   |       |       iehef98kex-hzvpg0sava.gz
+    |   |       |       ifm1hju0cl-dxx9fxp4il.gz
+    |   |       |       jo92s1cya7-6cfz1n2cew.gz
+    |   |       |       jq8rpdvuh6-47otxtyo56.gz
+    |   |       |       jvezlg4agh-0j3bgjxly4.gz
+    |   |       |       kcwtitofq5-vr1egmr9el.gz
+    |   |       |       khmbnv50bw-j5mq2jizvt.gz
+    |   |       |       m8s61fez9w-lzl9nlhx6b.gz
+    |   |       |       mbc5uzz3ki-iovd86k7lj.gz
+    |   |       |       mg3r54gz4g-ttgo8qnofa.gz
+    |   |       |       naj6qwqwgd-lcd1t2u6c8.gz
+    |   |       |       ni2snpybne-bqjiyaj88i.gz
+    |   |       |       nrke5rfvlk-mrlpezrjn3.gz
+    |   |       |       o2hts2w7ko-d7shbmvgxk.gz
+    |   |       |       ogzhq4eebf-tx1deeqmbf.gz
+    |   |       |       oqlicfrrxk-ub07r2b239.gz
+    |   |       |       p5e5e3n3so-c2oey78nd0.gz
+    |   |       |       pqar1ynphj-ausgxo2sd3.gz
+    |   |       |       qazcxj93jt-aexeepp0ev.gz
+    |   |       |       rlu60jrsvu-erw9l3u2r3.gz
+    |   |       |       slhnn85mfg-63fj8s7r0e.gz
+    |   |       |       t6tswbma7y-83jwlth58m.gz
+    |   |       |       trzvvaei25-87fc7y1x7t.gz
+    |   |       |       u1ogs3ngdo-v0zj4ognzu.gz
+    |   |       |       udq4p332zg-jd9uben2k1.gz
+    |   |       |       ureyxaf3h5-493y06b0oq.gz
+    |   |       |       v8n38mf9sy-h1s4sie4z3.gz
+    |   |       |       virsewaoe3-y7v9cxd14o.gz
+    |   |       |       xbuw0y25g6-37tfw0ft22.gz
+    |   |       |       yp7zbqkyqw-kbrnm935zg.gz
+    |   |       |       yx9w5svpv7-nvvlpmu67g.gz
+    |   |       |       yy2tubp8ya-c2jlpeoesf.gz
+    |   |       |       zjk3regdlh-notf2xhcfb.gz
+    |   |       |       
+    |   |       +---EndpointInfo
+    |   |       |       myCareers.Web.json
+    |   |       |       myCareers.Web.OpenApiFiles.cache
+    |   |       |       
+    |   |       +---ref
+    |   |       |       myCareers.Web.dll
+    |   |       |       
+    |   |       +---refint
+    |   |       |       myCareers.Web.dll
+    |   |       |       
+    |   |       +---scopedcss
+    |   |       |   +---bundle
+    |   |       |   |       myCareers.Web.styles.css
+    |   |       |   |       
+    |   |       |   +---projectbundle
+    |   |       |   |       myCareers.Web.bundle.scp.css
+    |   |       |   |       
+    |   |       |   \---Views
+    |   |       |       \---Shared
+    |   |       |               _Layout.cshtml.rz.scp.css
+    |   |       |               
+    |   |       \---staticwebassets
+    |   \---Release
+    |       \---net9.0
+    |           |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+    |           |   myCareers.Web.AssemblyInfo.cs
+    |           |   myCareers.Web.AssemblyInfoInputs.cache
+    |           |   myCareers.Web.assets.cache
+    |           |   myCareers.Web.csproj.AssemblyReference.cache
+    |           |   myCareers.Web.GeneratedMSBuildEditorConfig.editorconfig
+    |           |   myCareers.Web.GlobalUsings.g.cs
+    |           |   myCareers.Web.RazorAssemblyInfo.cache
+    |           |   myCareers.Web.RazorAssemblyInfo.cs
+    |           |   
+    |           +---ref
+    |           \---refint
+    +---Properties
+    |       launchSettings.json
+    |       
+    +---Views
+    |   |   _ViewImports.cshtml
+    |   |   _ViewStart.cshtml
+    |   |   
+    |   +---Account
+    |   |       ChangePassword.cshtml
+    |   |       ForgotPassword.cshtml
+    |   |       ForgotPasswordConfirmation.cshtml
+    |   |       Login.cshtml
+    |   |       Profile.cshtml
+    |   |       Register.cshtml
+    |   |       ResetPassword.cshtml
+    |   |       
+    |   +---Application
+    |   |       Apply.cshtml
+    |   |       Details.cshtml
+    |   |       MyApplications.cshtml
+    |   |       
+    |   +---Dashboard
+    |   |       AdminDashboard.cshtml
+    |   |       ApplicantDashboard.cshtml
+    |   |       Index.cshtml
+    |   |       RecruiterDashboard.cshtml
+    |   |       
+    |   +---Home
+    |   |       Index.cshtml
+    |   |       Privacy.cshtml
+    |   |       
+    |   +---JobPosting
+    |   |       Create.cshtml
+    |   |       Details.cshtml
+    |   |       Edit.cshtml
+    |   |       Index.cshtml
+    |   |       
+    |   +---Jobs
+    |   |       Browse.cshtml
+    |   |       Details.cshtml
+    |   |       
+    |   +---RecruiterApplication
+    |   |       JobApplications.cshtml
+    |   |       ViewApplication.cshtml
+    |   |       
+    |   \---Shared
+    |           Error.cshtml
+    |           _Layout.cshtml
+    |           _Layout.cshtml.css
+    |           _ValidationScriptsPartial.cshtml
+    |           
+    \---wwwroot
+        |   favicon.ico
+        |   
+        +---css
+        |       site.css
+        |       
+        +---js
+        |       site.js
+        |       
+        +---lib
+        |   +---bootstrap
+        |   |   |   LICENSE
+        |   |   |   
+        |   |   \---dist
+        |   |       +---css
+        |   |       |       bootstrap-grid.css
+        |   |       |       bootstrap-grid.css.map
+        |   |       |       bootstrap-grid.min.css
+        |   |       |       bootstrap-grid.min.css.map
+        |   |       |       bootstrap-grid.rtl.css
+        |   |       |       bootstrap-grid.rtl.css.map
+        |   |       |       bootstrap-grid.rtl.min.css
+        |   |       |       bootstrap-grid.rtl.min.css.map
+        |   |       |       bootstrap-reboot.css
+        |   |       |       bootstrap-reboot.css.map
+        |   |       |       bootstrap-reboot.min.css
+        |   |       |       bootstrap-reboot.min.css.map
+        |   |       |       bootstrap-reboot.rtl.css
+        |   |       |       bootstrap-reboot.rtl.css.map
+        |   |       |       bootstrap-reboot.rtl.min.css
+        |   |       |       bootstrap-reboot.rtl.min.css.map
+        |   |       |       bootstrap-utilities.css
+        |   |       |       bootstrap-utilities.css.map
+        |   |       |       bootstrap-utilities.min.css
+        |   |       |       bootstrap-utilities.min.css.map
+        |   |       |       bootstrap-utilities.rtl.css
+        |   |       |       bootstrap-utilities.rtl.css.map
+        |   |       |       bootstrap-utilities.rtl.min.css
+        |   |       |       bootstrap-utilities.rtl.min.css.map
+        |   |       |       bootstrap.css
+        |   |       |       bootstrap.css.map
+        |   |       |       bootstrap.min.css
+        |   |       |       bootstrap.min.css.map
+        |   |       |       bootstrap.rtl.css
+        |   |       |       bootstrap.rtl.css.map
+        |   |       |       bootstrap.rtl.min.css
+        |   |       |       bootstrap.rtl.min.css.map
+        |   |       |       
+        |   |       \---js
+        |   |               bootstrap.bundle.js
+        |   |               bootstrap.bundle.js.map
+        |   |               bootstrap.bundle.min.js
+        |   |               bootstrap.bundle.min.js.map
+        |   |               bootstrap.esm.js
+        |   |               bootstrap.esm.js.map
+        |   |               bootstrap.esm.min.js
+        |   |               bootstrap.esm.min.js.map
+        |   |               bootstrap.js
+        |   |               bootstrap.js.map
+        |   |               bootstrap.min.js
+        |   |               bootstrap.min.js.map
+        |   |               
+        |   +---jquery
+        |   |   |   LICENSE.txt
+        |   |   |   
+        |   |   \---dist
+        |   |           jquery.js
+        |   |           jquery.min.js
+        |   |           jquery.min.map
+        |   |           jquery.slim.js
+        |   |           jquery.slim.min.js
+        |   |           jquery.slim.min.map
+        |   |           
+        |   +---jquery-validation
+        |   |   |   LICENSE.md
+        |   |   |   
+        |   |   \---dist
+        |   |           additional-methods.js
+        |   |           additional-methods.min.js
+        |   |           jquery.validate.js
+        |   |           jquery.validate.min.js
+        |   |           
+        |   \---jquery-validation-unobtrusive
+        |       |   LICENSE.txt
+        |       |   
+        |       \---dist
+        |               jquery.validate.unobtrusive.js
+        |               jquery.validate.unobtrusive.min.js
+        |               
+        +---uploads
+        |   +---applications
+        |   |       2a269017-44d8-4b92-8499-910f89a52bc9.pdf
+        |   |       402a25dc-83cd-4979-9f06-6b5d9f68c993.pdf
+        |   |       46c3d1a8-2aa4-4e01-83af-478670e17edf.pdf
+        |   |       53ebf442-d319-499f-8a2b-d7b28ce9d5d6.pdf
+        |   |       6140af4a-e651-4bef-b309-bf2f1a4b5588.pdf
+        |   |       7035f4c0-3c09-44ef-9b46-33544b4c05ed.pdf
+        |   |       898b36df-c7e8-4a50-b47b-b60132c6a22b.pdf
+        |   |       a9a2fbb8-ac64-4857-a953-ac70203c797f.pdf
+        |   |       acd4fb31-4e9b-4acc-9cfe-ea6fffd5cc4b.pdf
+        |   |       b4bfb92e-058e-4b1f-a385-1ea070b25eaf.pdf
+        |   |       bf75ad0f-7658-4c27-86d8-e5d0b1b81bad.pdf
+        |   |       d13aae56-deb3-47ba-b073-c1c5032e85b4.pdf
+        |   |       d3d82c93-9902-4a53-8a8c-d54b50e9d659.pdf
+        |   |       f19792ae-c699-4541-9285-b81aa0b85a9a.pdf
+        |   |       
+        |   +---documents
+        |   +---resumes
+        |   \---z83
+        \---wwwroot
+            \---uploads
+                \---documents
+                    +---applications
+                    |       021c4b2d-7df6-4795-8ec4-f44546866e78.pdf
+                    |       10215314-2408-47a2-8e14-281546c523e5.pdf
+                    |       10e65d0e-5743-44d2-9fe2-95f15593db30.pdf
+                    |       159a4763-17e8-45a4-8098-3bb78291f2f9.pdf
+                    |       17fc2988-2484-4730-aa23-d8f3dc344109.pdf
+                    |       1aa1a63b-31a8-48e5-9545-e243eaf77eb6.pdf
+                    |       20e6f7b8-7ab6-4e41-85f6-58a36d0c4a87.pdf
+                    |       273cb168-408d-4d9b-854e-8f952fc2eea4.pdf
+                    |       2991d956-3474-4784-9106-917f6493cd51.pdf
+                    |       29cf17ce-a5e5-4e6e-bce2-a26631328be4.pdf
+                    |       2a27c24f-3b3b-44f7-aedc-eeaeaca5e181.pdf
+                    |       3a16ab93-a14e-47f3-96aa-cc26a1837224.pdf
+                    |       44de7a1a-9146-4504-85c2-b08fdae7ecbf.pdf
+                    |       4e260206-645f-4cdd-b3c6-07b7ee1d9877.png
+                    |       54f355eb-15b8-427c-b6f1-2c7081a9dc92.pdf
+                    |       7a4b32be-70ca-4dd1-96f8-f4af12c2420a.pdf
+                    |       822e8bc9-f340-4303-adc4-d32bcdee804e.pdf
+                    |       8350fe59-18c4-4c1e-9745-689d07e35e8f.pdf
+                    |       854f8147-2b60-4bbf-abe1-edbcb566ec32.pdf
+                    |       8844e78f-3575-48fc-8336-e4eaf4e762cd.pdf
+                    |       9972a84b-584f-4495-bc36-e99825804394.pdf
+                    |       b69829ba-7425-4634-ab68-26dfe893afc5.pdf
+                    |       d12dc791-6c9c-4fd9-857b-f522dd9484ab.pdf
+                    |       d397398f-768f-4c42-9414-b2d338452ce9.pdf
+                    |       ed2913e1-5bc3-426d-93db-b9d72308fdd8.pdf
+                    |       
+                    +---documents
+                    +---resumes
+                    \---z83

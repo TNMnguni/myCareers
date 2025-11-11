@@ -1,0 +1,117 @@
+﻿@model myCareers.Application.DTOs.JobPosting.JobPostingDto
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-body p-4">
+                    <!-- Job Header -->
+                    <div class="mb-4">
+                        <h1 class="mb-3">@Model.Title</h1>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="badge bg-primary"><i class="fas fa-building me-1"></i>@Model.Department</span>
+                            <span class="badge bg-info"><i class="fas fa-map-marker-alt me-1"></i>@Model.Location</span>
+                            <span class="badge bg-success"><i class="fas fa-briefcase me-1"></i>@Model.EmploymentTypeDisplay</span>
+                            <span class="badge bg-warning text-dark"><i class="fas fa-chart-line me-1"></i>@Model.ExperienceLevelDisplay</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.SalaryRange))
+                        {
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-money-bill-wave me-2"></i><strong>Salary:</strong> @Model.SalaryRange
+                            </p>
+                        }
+                        <p class="text-muted">
+                            <i class="fas fa-calendar-alt me-2"></i><strong>Closing Date:</strong> @Model.ClosingDate.ToString("dd MMMM yyyy")
+                            @if (Model.DaysUntilClosing > 0)
+                            {
+                                <span class="badge bg-danger ms-2">@Model.DaysUntilClosing days left</span>
+                            }
+                        </p>
+                    </div>
+
+                    <!-- Job Description -->
+                    <div class="mb-4">
+                        <h4 class="border-bottom pb-2 mb-3">Job Description</h4>
+                        <div style="white-space: pre-line;">@Model.Description</div>
+                    </div>
+
+                    <!-- Recruiter Info -->
+                    <div class="alert alert-light">
+                        <p class="mb-1"><strong>Posted by:</strong> @Model.RecruiterName</p>
+                        <p class="mb-0 text-muted"><small>Posted on @Model.CreatedDate.ToString("dd MMMM yyyy")</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Apply for this position</h5>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        @if (User.IsInRole("Applicant"))
+                        {
+                            <a href="#" class="btn btn-success btn-lg w-100 mb-3">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Application
+                            </a>
+                            <p class="text-muted small mb-0">Coming in Sprint 3</p>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Only applicants can apply for jobs.
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path" class="btn btn-primary w-100 mb-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Apply
+                        </a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6 class="card-title">Job Information</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-eye text-primary me-2"></i>
+                            <strong>Views:</strong> @Model.ViewCount
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-file-alt text-success me-2"></i>
+                            <strong>Applications:</strong> @Model.ApplicationCount
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-clock text-warning me-2"></i>
+                            <strong>Status:</strong>
+                            @if (Model.IsActive && !Model.IsClosed)
+                            {
+                                <span class="badge bg-success">Open</span>
+                            }
+                            else if (Model.IsClosed)
+                            {
+                                <span class="badge bg-danger">Closed</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactive</span>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -35,12 +35,26 @@
     </div>
 </div>
 
+<!-- Explore Career Opportunities Section -->
 <div class="container my-5">
+    <div class="row text-center mb-4">
+        <div class="col-md-12">
+            <h2>Explore Career Opportunities</h2>
+            <p class="lead text-muted">Join our team and make a difference in international relations</p>
+            <a asp-controller="Jobs" asp-action="Browse" class="btn btn-lg" style="background-color:#23A455; border-color:#23A455; color: white;">
+                <i class="fas fa-search me-2"></i>Browse Available Jobs
+            </a>
+        </div>
+    </div>
+
+    <!-- Feature Cards -->
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card h-100 text-center">
                 <div class="card-body">
-                    <div class="mb-3" style="color:#23A455;"><i class="fas fa-search fa-3x"></i></div>
+                    <div class="mb-3" style="color:#23A455;">
+                        <i class="fas fa-search fa-3x"></i>
+                    </div>
                     <h5 class="card-title">Find Your Dream Job</h5>
                     <p class="card-text">Browse through various career opportunities and find the perfect match for your skills and aspirations.</p>
                 </div>
@@ -49,8 +63,9 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 text-center">
                 <div class="card-body">
-                        <div class="mb-3" style="color:#23A455;"><i class="fas fa-file-alt fa-3x"></i></div>
-                    
+                    <div class="mb-3" style="color:#23A455;">
+                        <i class="fas fa-file-alt fa-3x"></i>
+                    </div>
                     <h5 class="card-title">Easy Application Process</h5>
                     <p class="card-text">Submit your applications with our streamlined, user-friendly process designed for your convenience.</p>
                 </div>
@@ -59,9 +74,104 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 text-center">
                 <div class="card-body">
-                    <div class="mb-3" style="color:#23A455;"><i class="fas fa-chart-line fa-3x"></i></div>
+                    <div class="mb-3" style="color:#23A455;">
+                        <i class="fas fa-chart-line fa-3x"></i>
+                    </div>
                     <h5 class="card-title">Track Your Progress</h5>
                     <p class="card-text">Monitor your application status and stay updated throughout the recruitment process.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Why Join DIRCO Section -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center mb-4">
+                <h2>Why Join DIRCO?</h2>
+                <p class="lead text-muted">Be part of South Africa's global diplomatic mission</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3" style="color:#23A455;">
+                                <i class="fas fa-globe fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Global Impact</h5>
+                                <p class="card-text">Contribute to South Africa's international relations and make a difference on the global stage.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3" style="color:#23A455;">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Diverse Culture</h5>
+                                <p class="card-text">Work with talented professionals from various backgrounds in an inclusive environment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3" style="color:#23A455;">
+                                <i class="fas fa-graduation-cap fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Career Development</h5>
+                                <p class="card-text">Access training programs and advancement opportunities to grow your diplomatic career.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3" style="color:#23A455;">
+                                <i class="fas fa-balance-scale fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Work-Life Balance</h5>
+                                <p class="card-text">Enjoy competitive benefits and a supportive work environment that values your wellbeing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action Section -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card text-center border-0 shadow-sm" style="background: linear-gradient(135deg, #23A455 0%, #1a7d40 100%);">
+                <div class="card-body py-5 text-white">
+                    <h2 class="mb-3">Ready to Start Your Journey?</h2>
+                    <p class="lead mb-4">Explore open positions and take the first step toward an exciting career in international relations.</p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a asp-controller="Jobs" asp-action="Browse" class="btn btn-light btn-lg">
+                            <i class="fas fa-search me-2"></i>View Open Positions
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

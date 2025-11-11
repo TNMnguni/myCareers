@@ -1,10 +1,9 @@
-using myCareers.Application;
-using myCareers.Infrastructure;
-using myCareers.Infrastructure.Data;
-using myCareers.Web.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using myCareers.Application;
+using myCareers.Infrastructure;
+using myCareers.Infrastructure.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// ===== ADD SESSION SUPPORT =====
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2); // Session timeout after 2 hours of inactivity
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Use HTTPS in production
+});
 
 // Add Infrastructure services (includes DbContext registration)
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -31,7 +41,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false;
+    options.RequireHttpsMetadata = false; // Set to true in production
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -57,6 +67,14 @@ builder.Services.AddAuthentication(options =>
                 context.Token = token;
             }
             return Task.CompletedTask;
+        },
+        OnAuthenticationFailed = context =>
+        {
+            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                context.Response.Headers.Append("Token-Expired", "true");
+            }
+            return Task.CompletedTask;
         }
     };
 });
@@ -74,7 +92,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<myCareersDbContext>();
-
         // Apply any pending migrations
         logger.LogInformation("Applying database migrations...");
         await context.Database.MigrateAsync();
@@ -88,6 +105,17 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         logger.LogError(ex, "An error occurred while initializing the database.");
+    }
+
+    try
+    {
+        logger.LogInformation("Ensuring upload directories exist...");
+        myCareers.Web.Extensions.DirectorySetup.EnsureUploadDirectoriesExist(services);
+        logger.LogInformation("Upload directories verified successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while creating upload directories.");
     }
 }
 
@@ -108,6 +136,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// ===== ADD SESSION MIDDLEWARE (MUST BE BEFORE UseAuthentication) =====
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

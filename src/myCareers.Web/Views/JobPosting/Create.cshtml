@@ -1,0 +1,130 @@
+﻿@model myCareers.Application.DTOs.JobPosting.JobPostingDto
+@{
+    ViewData["Title"] = "Create Job Posting";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Create New Job Posting</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <strong>Please fix the following errors:</strong>
+                                <ul class="mb-0 mt-2">
+                                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                    {
+                                        <li>@error.ErrorMessage</li>
+                                    }
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <!-- Basic Information -->
+                        <h5 class="border-bottom pb-2 mb-3">Basic Information</h5>
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">Job Title <span class="text-danger">*</span></label>
+                            <input asp-for="Title" class="form-control" placeholder="e.g., Senior Software Developer" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Job Description <span class="text-danger">*</span></label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Provide a detailed description of the role, responsibilities, and requirements..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                            <small class="text-muted">Minimum 50 characters</small>
+                        </div>
+
+                        <!-- Job Details -->
+                        <h5 class="border-bottom pb-2 mb-3 mt-4">Job Details</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Department" class="form-label">Department</label>
+                                <input asp-for="Department" class="form-control" placeholder="e.g., Information Technology" />
+                                <span asp-validation-for="Department" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Location" class="form-label">Location</label>
+                                <input asp-for="Location" class="form-control" placeholder="e.g., Pretoria, South Africa" />
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SalaryRange" class="form-label">Salary Range</label>
+                            <input asp-for="SalaryRange" class="form-control" placeholder="e.g., R500,000 - R700,000 per annum" />
+                            <span asp-validation-for="SalaryRange" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="EmploymentType" class="form-label">Employment Type <span class="text-danger">*</span></label>
+                                <select asp-for="EmploymentType" class="form-select">
+                                    <option value="">-- Select Employment Type --</option>
+                                    <option value="1">Full-Time</option>
+                                    <option value="2">Part-Time</option>
+                                    <option value="3">Contract</option>
+                                    <option value="4">Temporary</option>
+                                    <option value="5">Internship</option>
+                                </select>
+                                <span asp-validation-for="EmploymentType" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ExperienceLevel" class="form-label">Experience Level <span class="text-danger">*</span></label>
+                                <select asp-for="ExperienceLevel" class="form-select">
+                                    <option value="">-- Select Experience Level --</option>
+                                    <option value="1">Entry Level (0-2 years)</option>
+                                    <option value="2">Mid Level (3-5 years)</option>
+                                    <option value="3">Senior Level (6+ years)</option>
+                                    <option value="4">Executive Level</option>
+                                </select>
+                                <span asp-validation-for="ExperienceLevel" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ClosingDate" class="form-label">Application Closing Date <span class="text-danger">*</span></label>
+                            <input asp-for="ClosingDate" type="date" class="form-control" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="ClosingDate" class="text-danger"></span>
+                        </div>
+
+                        <!-- Publishing Options -->
+                        <h5 class="border-bottom pb-2 mb-3 mt-4">Publishing Options</h5>
+
+                        <div class="form-check mb-4">
+                            <input asp-for="PublishImmediately" class="form-check-input" />
+                            <label asp-for="PublishImmediately" class="form-check-label">
+                                Publish this job immediately (or save as draft)
+                            </label>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i>Create Job Posting
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

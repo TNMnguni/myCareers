@@ -1,0 +1,476 @@
+﻿@model List<myCareers.Application.DTOs.JobApplication.JobApplicationDto>
+
+@{
+    ViewData["Title"] = "Job Applications";
+    var jobTitle = ViewBag.JobTitle as string;
+    var jobId = ViewBag.JobId as int?;
+    var department = ViewBag.Department as string;
+}
+
+<div class="container-fluid mt-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2><i class="fas fa-inbox me-2"></i>Applications for @jobTitle</h2>
+                    <p class="text-muted mb-0">@department • @Model.Count Total Applications</p>
+                </div>
+                <div>
+                    <a asp-controller="JobPosting" asp-action="Details" asp-route-id="@jobId" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Job
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h6 class="card-title">New Applications</h6>
+                    <h3 class="mb-0">@Model.Count(a => a.Status == myCareers.Core.Enums.ApplicationStatus.Submitted)</h3>
+                    <small>Awaiting review</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h6 class="card-title">Under Review</h6>
+                    <h3 class="mb-0">@Model.Count(a => a.Status == myCareers.Core.Enums.ApplicationStatus.UnderReview)</h3>
+                    <small>Being evaluated</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h6 class="card-title">Shortlisted</h6>
+                    <h3 class="mb-0">@Model.Count(a => a.Status == myCareers.Core.Enums.ApplicationStatus.Shortlisted)</h3>
+                    <small>Interview pending</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h6 class="card-title">Interviews</h6>
+                    <h3 class="mb-0">@Model.Count(a => a.Status == myCareers.Core.Enums.ApplicationStatus.InterviewScheduled)</h3>
+                    <small>Scheduled</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter and Bulk Actions -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="form-group mb-0">
+                                <label for="statusFilter" class="form-label me-2">Filter by Status:</label>
+                                <select id="statusFilter" class="form-select d-inline-block w-auto">
+                                    <option value="">All Applications</option>
+                                    <option value="Submitted">New (Submitted)</option>
+                                    <option value="UnderReview">Under Review</option>
+                                    <option value="Shortlisted">Shortlisted</option>
+                                    <option value="InterviewScheduled">Interview Scheduled</option>
+                                    <option value="Accepted">Accepted</option>
+                                    <option value="Rejected">Rejected</option>
+                                    <option value="Withdrawn">Withdrawn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button id="btnBulkReject" class="btn btn-danger" disabled>
+                                <i class="fas fa-times-circle me-2"></i>Bulk Reject Selected
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Application List</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="applicationsTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" id="selectAll" />
+                                        </th>
+                                        <th>Applicant</th>
+                                        <th>Email</th>
+                                        <th>Applied Date</th>
+                                        <th>Status</th>
+                                        <th>Interview Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var app in Model.OrderByDescending(a => a.AppliedDate))
+                                    {
+                                        <tr data-status="@app.Status">
+                                            <td>
+                                                @if (app.Status == myCareers.Core.Enums.ApplicationStatus.Submitted ||
+                                                                                        app.Status == myCareers.Core.Enums.ApplicationStatus.UnderReview ||
+                                                                                        app.Status == myCareers.Core.Enums.ApplicationStatus.Shortlisted)
+                                                {
+                                                    <input type="checkbox" class="app-checkbox" value="@app.Id" />
+                                                }
+                                            </td>
+                                            <td>
+                                                <strong>@app.ApplicantName</strong>
+                                                @if (app.DaysSinceApplied <= 7)
+                                                {
+                                                    <span class="badge bg-info ms-2">New</span>
+                                                }
+                                            </td>
+                                            <td>@app.ApplicantEmail</td>
+                                            <td>@app.AppliedDate.ToString("dd MMM yyyy")</td>
+                                            <td>
+                                                @switch (app.Status)
+                                                {
+                                                    case myCareers.Core.Enums.ApplicationStatus.Submitted:
+                                                        <span class="badge bg-info">@app.StatusDisplay</span>
+                                                        break;
+                                                    case myCareers.Core.Enums.ApplicationStatus.UnderReview:
+                                                        <span class="badge bg-warning">@app.StatusDisplay</span>
+                                                        break;
+                                                    case myCareers.Core.Enums.ApplicationStatus.Shortlisted:
+                                                        <span class="badge bg-primary">@app.StatusDisplay</span>
+                                                        break;
+                                                    case myCareers.Core.Enums.ApplicationStatus.InterviewScheduled:
+                                                        <span class="badge bg-success">@app.StatusDisplay</span>
+                                                        break;
+                                                    case myCareers.Core.Enums.ApplicationStatus.Accepted:
+                                                        <span class="badge bg-success">@app.StatusDisplay</span>
+                                                        break;
+                                                    case myCareers.Core.Enums.ApplicationStatus.Rejected:
+                                                        <span class="badge bg-danger">@app.StatusDisplay</span>
+                                                        break;
+                                                    case myCareers.Core.Enums.ApplicationStatus.Withdrawn:
+                                                        <span class="badge bg-secondary">@app.StatusDisplay</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-secondary">@app.StatusDisplay</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (app.InterviewDate.HasValue)
+                                                {
+                                                    @app.InterviewDate.Value.ToString("dd MMM yyyy HH:mm")
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a asp-controller="RecruiterApplication"
+                                                       asp-action="ViewApplication"
+                                                       asp-route-id="@app.Id"
+                                                       class="btn btn-sm btn-primary"
+                                                       title="View Application">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+
+                                                    @if (app.Status == myCareers.Core.Enums.ApplicationStatus.UnderReview ||
+                                                                                                app.Status == myCareers.Core.Enums.ApplicationStatus.Shortlisted)
+                                                    {
+                                                        <button class="btn btn-sm btn-success btn-accept"
+                                                                data-id="@app.Id"
+                                                                title="Accept Application">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if (app.Status == myCareers.Core.Enums.ApplicationStatus.Submitted ||
+                                                                                                app.Status == myCareers.Core.Enums.ApplicationStatus.UnderReview ||
+                                                                                                app.Status == myCareers.Core.Enums.ApplicationStatus.Shortlisted)
+                                                    {
+                                                        <button class="btn btn-sm btn-danger btn-reject"
+                                                                data-id="@app.Id"
+                                                                title="Reject Application">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">No applications received yet</h5>
+                            <p class="text-muted">Applications will appear here once candidates apply</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accept Application Modal -->
+<div class="modal fade" id="acceptModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Accept Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="acceptForm">
+                    <input type="hidden" id="acceptApplicationId" />
+                    <div class="mb-3">
+                        <label class="form-label">Schedule Interview (Optional)</label>
+                        <input type="datetime-local" class="form-control" id="interviewDate" />
+                        <small class="form-text text-muted">Leave blank to accept without scheduling interview</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-control" id="interviewNotes" rows="3" placeholder="Add any notes about the interview or acceptance..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmAccept">Accept Application</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Application Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reject Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="rejectForm">
+                    <input type="hidden" id="rejectApplicationId" />
+                    <div class="mb-3">
+                        <label class="form-label">Reason for Rejection (Optional)</label>
+                        <textarea class="form-control" id="rejectionReason" rows="3" placeholder="Provide a reason for rejection..."></textarea>
+                        <small class="form-text text-muted">This will be added to the application's review notes</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmReject">Reject Application</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Reject Modal -->
+<div class="modal fade" id="bulkRejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bulk Reject Applications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>You are about to reject <strong id="bulkCount">0</strong> application(s).</p>
+                <form id="bulkRejectForm">
+                    <div class="mb-3">
+                        <label class="form-label">Reason for Rejection (Optional)</label>
+                        <textarea class="form-control" id="bulkRejectionReason" rows="3" placeholder="Provide a reason for bulk rejection..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmBulkReject">Reject Selected</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            const jobId = @jobId;
+
+            // Status filter
+            $('#statusFilter').on('change', function() {
+                const status = $(this).val();
+                if (status === '') {
+                    $('#applicationsTable tbody tr').show();
+                } else {
+                    $('#applicationsTable tbody tr').hide();
+                    $('#applicationsTable tbody tr[data-status="' + status + '"]').show();
+                }
+                updateBulkRejectButton();
+            });
+
+            // Select all checkbox
+            $('#selectAll').on('change', function() {
+                const isChecked = $(this).prop('checked');
+                $('.app-checkbox:visible').prop('checked', isChecked);
+                updateBulkRejectButton();
+            });
+
+            // Individual checkboxes
+            $('.app-checkbox').on('change', function() {
+                updateBulkRejectButton();
+                updateSelectAllCheckbox();
+            });
+
+            function updateBulkRejectButton() {
+                const checkedCount = $('.app-checkbox:checked').length;
+                $('#btnBulkReject').prop('disabled', checkedCount === 0);
+                $('#btnBulkReject').text(`Bulk Reject Selected (${checkedCount})`);
+            }
+
+            function updateSelectAllCheckbox() {
+                const totalVisible = $('.app-checkbox:visible').length;
+                const checkedVisible = $('.app-checkbox:visible:checked').length;
+                $('#selectAll').prop('checked', totalVisible > 0 && totalVisible === checkedVisible);
+            }
+
+            // Accept application button
+            $('.btn-accept').on('click', function() {
+                const applicationId = $(this).data('id');
+                $('#acceptApplicationId').val(applicationId);
+                $('#interviewDate').val('');
+                $('#interviewNotes').val('');
+                $('#acceptModal').modal('show');
+            });
+
+            // Confirm accept
+            $('#confirmAccept').on('click', function() {
+                const applicationId = $('#acceptApplicationId').val();
+                const interviewDate = $('#interviewDate').val();
+                const interviewNotes = $('#interviewNotes').val();
+
+                $.ajax({
+                    url: '@Url.Action("AcceptApplication", "RecruiterApplication")',
+                    type: 'POST',
+                    data: {
+                        id: applicationId,
+                        interviewDate: interviewDate || null,
+                        interviewNotes: interviewNotes,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#acceptModal').modal('hide');
+                            setTimeout(() => location.reload(), 1500);
+                        } else {
+                            toastr.error(response.message || 'Failed to accept application');
+                        }
+                    },
+                    error: function() {
+                        toastr.error('An error occurred while accepting the application');
+                    }
+                });
+            });
+
+            // Reject application button
+            $('.btn-reject').on('click', function() {
+                const applicationId = $(this).data('id');
+                $('#rejectApplicationId').val(applicationId);
+                $('#rejectionReason').val('');
+                $('#rejectModal').modal('show');
+            });
+
+            // Confirm reject
+            $('#confirmReject').on('click', function() {
+                const applicationId = $('#rejectApplicationId').val();
+                const rejectionReason = $('#rejectionReason').val();
+
+                $.ajax({
+                    url: '@Url.Action("RejectApplication", "RecruiterApplication")',
+                    type: 'POST',
+                    data: {
+                        id: applicationId,
+                        rejectionReason: rejectionReason,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#rejectModal').modal('hide');
+                            setTimeout(() => location.reload(), 1500);
+                        } else {
+                            toastr.error(response.message || 'Failed to reject application');
+                        }
+                    },
+                    error: function() {
+                        toastr.error('An error occurred while rejecting the application');
+                    }
+                });
+            });
+
+            // Bulk reject button
+            $('#btnBulkReject').on('click', function() {
+                const checkedCount = $('.app-checkbox:checked').length;
+                $('#bulkCount').text(checkedCount);
+                $('#bulkRejectionReason').val('');
+                $('#bulkRejectModal').modal('show');
+            });
+
+            // Confirm bulk reject
+            $('#confirmBulkReject').on('click', function() {
+                const applicationIds = [];
+                $('.app-checkbox:checked').each(function() {
+                    applicationIds.push($(this).val());
+                });
+                const rejectionReason = $('#bulkRejectionReason').val();
+
+                $.ajax({
+                    url: '@Url.Action("BulkReject", "RecruiterApplication")',
+                    type: 'POST',
+                    data: {
+                        jobId: jobId,
+                        applicationIds: applicationIds,
+                        rejectionReason: rejectionReason,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#bulkRejectModal').modal('hide');
+                            setTimeout(() => location.reload(), 1500);
+                        } else {
+                            toastr.warning(response.message || 'Some applications could not be rejected');
+                        }
+                    },
+                    error: function() {
+                        toastr.error('An error occurred during bulk rejection');
+                    }
+                });
+            });
+        });
+    </script>
+}

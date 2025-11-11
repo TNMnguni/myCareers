@@ -32,7 +32,7 @@
                         <label asp-for="Email" class="form-label">Email Address</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input asp-for="Email" class="form-control" placeholder="Enter your email" autofocus />
+                            <input asp-for="Email" class="form-control" placeholder="Enter your email" autofocus autocomplete="username" />
                         </div>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
@@ -44,7 +44,10 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
+                            <input asp-for="Password" type="password" class="form-control" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" />
+                            <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword">
+                                <i class="fas fa-eye" id="toggleLoginPasswordIcon"></i>
+                            </button>
                         </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
@@ -64,7 +67,7 @@
                 <div class="text-center mt-3">
                     <p class="mb-0">
                         Don't have an account?
-                        <a asp-controller="Account" asp-action="Register" class="text-decoration-none">Register here</a>
+                        <a asp-controller="Account" asp-action="Register" class="text-decoration-none">Register</a>
                     </p>
                 </div>
             </div>
@@ -74,4 +77,22 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            // Password visibility toggle for login
+            $('#toggleLoginPassword').click(function() {
+                const passwordInput = $('#loginPassword');
+                const toggleIcon = $('#toggleLoginPasswordIcon');
+
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+        });
+    </script>
 }

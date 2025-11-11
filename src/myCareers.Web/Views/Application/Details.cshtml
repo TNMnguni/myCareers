@@ -1,0 +1,40 @@
+﻿@if (!string.IsNullOrEmpty(Model.ResumeUrl) || !string.IsNullOrEmpty(Model.IdDocumentUrl))
+{
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="fas fa-paperclip me-2"></i>Uploaded Documents</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-unstyled">
+                @if (!string.IsNullOrEmpty(Model.ResumeUrl))
+                {
+                    <li class="mb-2">
+                        <i class="fas fa-file-pdf me-2 text-danger"></i>
+                        <a href="@Model.ResumeUrl" target="_blank">Resume/CV</a>
+                    </li>
+                }
+                @if (!string.IsNullOrEmpty(Model.IdDocumentUrl))
+                {
+                    <li class="mb-2">
+                        <i class="fas fa-id-card me-2 text-primary"></i>
+                        <a href="@Model.IdDocumentUrl" target="_blank">ID Document</a>
+                    </li>
+                }
+                @if (!string.IsNullOrEmpty(Model.QualificationCertificateUrl))
+                {
+                    <li class="mb-2">
+                        <i class="fas fa-graduation-cap me-2 text-success"></i>
+                        <a href="@Model.QualificationCertificateUrl" target="_blank">Qualifications</a>
+                    </li>
+                }
+                @if (!string.IsNullOrEmpty(Model.Z83FormUrl))
+                {
+                    <li class="mb-2">
+                        <i class="fas fa-file-contract me-2 text-warning"></i>
+                        <a href="@Model.Z83FormUrl" target="_blank">Z83 Form</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
